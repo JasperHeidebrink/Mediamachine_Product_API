@@ -36,7 +36,7 @@ if (! defined('WPINC')) {
 define('DPG_EVENTAPI_PATH', trailingslashit(plugin_dir_path(__FILE__)));
 define('DPG_EVENTAPI_URL', trailingslashit(plugin_dir_url(__FILE__)));
 define('DPG_EVENTAPI_NAME', 'DPG Event API');
-define('DPG_EVENTAPI_SLUG', 'dpg-eventapi');
+define('DPG_EVENTAPI_SLUG', 'dpg-wp-event-api');
 define('DPG_EVENTAPI_VERSION', '1.0.0');
 
 
