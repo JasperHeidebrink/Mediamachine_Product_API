@@ -1,0 +1,27 @@
+{
+  "name": "dpg/dpg-event-api",
+  "version": "1.0.0",
+  "description": "Event API plugin to retrieve exhibitors and events",
+  "keywords": [
+    "Event API",
+    "WordPress",
+    "dpg media magazines"
+  ],
+  "homepage": "https://www.dpgmediamagazines.nl",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Wordpress Beheer NL",
+      "email": "wordpress_beheer.nl@dpgmediamagazines.nl",
+      "homepage": "https://www.dpgmediamagazines.nl"
+    }
+  ],
+  "require": {
+    "php": ">=7.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "DPG\\WordPress\\EventApi\\": "/src"
+    }
+  }
+}
