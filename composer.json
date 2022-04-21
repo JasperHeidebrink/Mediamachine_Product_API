@@ -5,8 +5,10 @@
   "keywords": [
     "Event API",
     "WordPress",
-    "dpg media magazines"
+    "plugin",
+    "DPG Media"
   ],
+  "type": "wordpress-plugin",
   "homepage": "https://www.dpgmediamagazines.nl",
   "license": "proprietary",
   "authors": [
