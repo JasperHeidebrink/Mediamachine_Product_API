@@ -7,6 +7,7 @@
 
 namespace DPG\WordPress\EventApi;
 
+use DPG\WordPress\EventApi\Admin\Menu;
 use DPG\WordPress\EventApi\Admin\Settings;
 
 class Admin
@@ -22,8 +23,10 @@ class Admin
         }
 
         $settings = new Settings();
+        $menu = new Menu();
         add_action('admin_init', [$settings, 'register_settings']);
-        add_action('admin_menu', [$settings, 'add_event_page']);
+        add_action('admin_init', [$settings, 'register_settings_cache']);
+        add_action('admin_menu', [$menu, 'add_event_page']);
     }
 
     /**

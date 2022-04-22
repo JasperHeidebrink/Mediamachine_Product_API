@@ -9,7 +9,7 @@ class Events
     /**
      * @return array
      */
-    public static function getAllEvents(bool $hideArchive = true): array
+    public static function getAll(bool $hideArchive = true): array
     {
         $response = EventApi::get('event');
 

@@ -9,7 +9,7 @@ class Editions
     /**
      * @return array
      */
-    public static function getAllEditions(int $editionId, bool $hideArchive = true): array
+    public static function getAll(int $editionId, bool $hideArchive = true): array
     {
         $response = EventApi::get('eventEdition', ['eventId'=>$editionId]);
 

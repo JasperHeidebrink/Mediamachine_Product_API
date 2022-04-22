@@ -7,6 +7,8 @@
 
 namespace DPG\WordPress\EventApi\Admin;
 
+use DPG\WordPress\EventApi\Api\Activities;
+
 class Menu
 {
     protected $parent_plugin_name = 'sm-main';
@@ -64,7 +66,13 @@ class Menu
      */
     public static function display_plugin_setup_page(): void
     {
-        include_once DPG_EVENTAPI_PATH.'views/admin-options.php';
+        include_once DPG_EVENTAPI_PATH.'views/admin/options.php';
+
+        $activityList = Activities::getAll();
+        if (empty($activityList)) {
+            return;
+        }
+        include_once DPG_EVENTAPI_PATH.'views/admin/activities.php';
     }
 
     /**
@@ -148,7 +156,7 @@ class Menu
     {
         $options = get_option('eventapi_options_group');
 
-        if (empty($options['event_id']) ){
+        if (empty($options['event_id'])) {
             return __('First you have to select a event', DPG_EVENTAPI_SLUG);
         }
 

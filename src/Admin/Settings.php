@@ -8,36 +8,6 @@ use DPG\WordPress\EventApi\Api\Events;
 class Settings
 {
     /**
-     * @return $this
-     */
-    public function add_event_page(): self
-    {
-        add_submenu_page(
-            'sm-main',
-            'DPG EventApi Setup',
-            'DPG EventApi',
-            'manage_options',
-            DPG_EVENTAPI_NAME,
-            [
-                $this,
-                'display_plugin_setup_page',
-            ]
-        );
-
-        return $this;
-    }
-
-    /**
-     * Just simple handler of showing the admin template.
-     *
-     * @return void
-     */
-    public function display_plugin_setup_page(): void
-    {
-        include_once DPG_EVENTAPI_PATH.'views/admin-options.php';
-    }
-
-    /**
      * @return void
      */
     public function register_settings()
@@ -54,7 +24,7 @@ class Settings
         add_settings_section(
             'eventapi_settings',
             __('Event settings', DPG_EVENTAPI_SLUG),
-            [$this, 'print_section_info'],
+            [$this, 'settings_info'],
             'eventapi_settings_admin'
         );
 
@@ -75,10 +45,59 @@ class Settings
     }
 
     /**
+     * @return void
+     */
+    public function register_settings_cache()
+    {
+        register_setting(
+            'eventapi_clear_cache_admin',
+            'eventapi_clear_cache',
+            [$this, 'clear_cache']
+        );
+
+        add_settings_section(
+            'eventapi_clear_cache',
+            __('Clear event data cache', DPG_EVENTAPI_SLUG),
+            [$this, 'clear_cache_info'],
+            'eventapi_clear_cache_admin'
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function clear_cache()
+    {
+        global $wpdb;
+        $query = $wpdb->prepare(
+            "DELETE FROM $wpdb->options WHERE option_name LIKE %s", '%'.DPG_EVENTAPI_SLUG.'%');
+        $wpdb->query($query);
+
+        $flashMessages = new FlashMessages();
+        $flashMessages->set_flash_messages(
+            __(
+                'Event cache is cleared',
+                DPG_EVENTAPI_SLUG
+            ),
+            'updated'
+        );
+    }
+
+    /**
      * Print the Section header
      */
-    public function print_section_info(): void
+    public function settings_info(): void
     {
+        echo '<hr>';
+        _e('Enter your settings below:', DPG_EVENTAPI_SLUG);
+    }
+
+    /**
+     * Print the Section header
+     */
+    public function clear_cache_info(): void
+    {
+        echo '<hr>';
         _e('Enter your settings below:', DPG_EVENTAPI_SLUG);
     }
 
@@ -88,7 +107,7 @@ class Settings
     public function dropdown_events(): void
     {
         $current_event_id = (int)get_option('eventapi_event_id');
-        $events           = Events::getAllEvents();
+        $events           = Events::getAll();
 
         echo '<select id="eventapi_event_id" name="eventapi_event_id">';
         echo '<option value="">'.__('Please select a event', DPG_EVENTAPI_SLUG).'</option>';
@@ -104,9 +123,9 @@ class Settings
      */
     public function dropdown_editions(): void
     {
-        $current_event_id = (int)get_option('eventapi_event_id');
+        $current_event_id   = (int)get_option('eventapi_event_id');
         $current_edition_id = (int)get_option('eventapi_edition_id');
-        $editions           = Editions::getAllEditions($current_event_id);
+        $editions           = Editions::getAll($current_event_id);
 
         if (empty($current_event_id)) {
             _e('First you have to select a event', DPG_EVENTAPI_SLUG);
