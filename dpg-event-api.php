@@ -39,8 +39,5 @@ define('DPG_EVENTAPI_NAME', 'DPG Event API');
 define('DPG_EVENTAPI_SLUG', 'dpg-wp-event-api');
 define('DPG_EVENTAPI_VERSION', '1.0.0');
 
-
 new Frontend();
 new Admin();
-
-
