@@ -23,10 +23,12 @@ class Admin
         }
 
         $settings = new Settings();
-        $menu = new Menu();
+        $menu     = new Menu();
         add_action('admin_init', [$settings, 'register_settings']);
         add_action('admin_init', [$settings, 'register_settings_cache']);
         add_action('admin_menu', [$menu, 'add_event_page']);
+
+        add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
     }
 
     /**
@@ -40,5 +42,25 @@ class Admin
             DPG_EVENTAPI_SLUG
         );
         echo '</p></div>';
+    }
+
+    /**
+     * @return void
+     */
+    public function enqueueScripts(): void
+    {
+        wp_enqueue_script(
+            'dpg_eventapi_admin',
+            DPG_EVENTAPI_URL.'assets/admin.js',
+            ['jquery'],
+            DPG_EVENTAPI_VERSION
+        );
+
+        wp_localize_script(
+            'dpg_eventapi_admin',
+            'dpg_eventapi_admin', [
+            'ajax_url' => self_admin_url('admin-ajax.php'),
+            'nonce'    => wp_create_nonce('ajaxnonce'),
+        ]);
     }
 }

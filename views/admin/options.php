@@ -26,4 +26,18 @@
         </form>
     </div>
 
+    <div class="wrap">
+        <div class="card" style="min-width:50%;">
+            <h2>Event data:</h2>
+            <button id="activities" class="ajaxload_activities button button-primary">
+                <?= __('Show Activities', DPG_EVENTAPI_SLUG) ?>
+            </button>
+            <button id="exhibitors" class="ajaxload_exhibitors button button-primary">
+                <?= __('Show Exhibitors', DPG_EVENTAPI_SLUG) ?>
+            </button>
+            <hr>
+            <div class="ajaxdata"></div>
+        </div>
+    </div>
+
 </div>
