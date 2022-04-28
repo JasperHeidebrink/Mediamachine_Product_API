@@ -39,6 +39,8 @@ class Exhibitors
             $data['id'] ?? 0,
             $data['title'] ?? '',
             $data['url'] ?? '',
+            $data['stand'] ?? '',
+            $data['branches'] ?? '',
         );
     }
 }

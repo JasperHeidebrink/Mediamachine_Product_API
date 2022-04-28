@@ -66,7 +66,10 @@ class Menu
      */
     public function display_plugin_setup_page(): void
     {
-        include_once DPG_EVENTAPI_PATH.'views/admin/options.php';
+        $context          = \Timber::context();
+        $context['title'] = DPG_EVENTAPI_NAME;
+
+        \Timber::render('admin/options.twig', $context);
     }
 
     /**

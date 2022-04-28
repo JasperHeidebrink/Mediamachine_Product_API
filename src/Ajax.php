@@ -14,11 +14,8 @@ class Ajax
 {
     public function __construct()
     {
-//        add_action('wp_ajax_dpgevent_data', [$this, 'get_eventapi_data']);
         add_action('wp_ajax_dpgeventhtml_activities', [$this, 'get_dpgeventhtml_activities']);
         add_action('wp_ajax_dpgeventhtml_exhibitors', [$this, 'get_dpgeventhtml_exhibitors']);
-//        add_action('wp_ajax_nopriv_dpgeventhtml', [$this, 'get_eventapi_html']);
-//        do_action( 'wp_ajax_nopriv_', [$this, ''] );
     }
 
 
@@ -42,10 +39,12 @@ class Ajax
             wp_send_json_error(__('No Activities found', DPG_EVENTAPI_SLUG));
         }
 
+        $context                 = \Timber::context();
+        $context['activityList'] = $activityList;
+
         ob_start();
-        include_once DPG_EVENTAPI_PATH.'views/admin/activities.php';
-        $html = ob_get_contents();
-        ob_end_clean();
+        \Timber::render('admin/activities.twig', $context);
+        $html = ob_get_clean();
 
         wp_send_json_success($html);
     }
@@ -60,10 +59,12 @@ class Ajax
             wp_send_json_error(__('No Exhibitors found', DPG_EVENTAPI_SLUG));
         }
 
+        $context                  = \Timber::context();
+        $context['exhibitorList'] = $exhibitorList;
+
         ob_start();
-        include_once DPG_EVENTAPI_PATH.'views/admin/exhibitors.php';
-        $html = ob_get_contents();
-        ob_end_clean();
+        \Timber::render('admin/exhibitors.twig', $context);
+        $html = ob_get_clean();
 
         wp_send_json_success($html);
     }

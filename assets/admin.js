@@ -7,11 +7,12 @@
  */
 
 jQuery(document).ready(function ($) {
-    $('.ajaxload_activities').click(function () {
+    $('.ajaxload').click(function () {
+        let type = $(this).attr('id');
         jQuery.post(
             dpg_eventapi_admin.ajax_url,
             {
-                action: 'dpgeventhtml_activities',
+                action: 'dpgeventhtml_' + type,
             },
             function (data) {
                 $('.ajaxdata').html(data.data);
@@ -19,16 +20,8 @@ jQuery(document).ready(function ($) {
         );
     });
 
-    $('.ajaxload_exhibitors').click(function () {
-        jQuery.post(
-            dpg_eventapi_admin.ajax_url,
-            {
-                action: 'dpgeventhtml_exhibitors',
-            },
-            function (data) {
-                console.log(data.data);
-                $('.ajaxdata').html(data.data);
-            }
-        );
+    $('select#eventapi_event_id,select#eventapi_edition_id').change( function () {
+        let form =$(this).parents('form');
+        form.find('input[type=submit]').click();
     });
 });

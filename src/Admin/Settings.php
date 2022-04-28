@@ -98,7 +98,7 @@ class Settings
     public function clear_cache_info(): void
     {
         echo '<hr>';
-        _e('Enter your settings below:', DPG_EVENTAPI_SLUG);
+        _e('Clear the complete event cache. <em>( backend and frontend )</em>', DPG_EVENTAPI_SLUG);
     }
 
     /**

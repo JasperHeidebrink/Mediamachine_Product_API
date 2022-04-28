@@ -1,6 +1,6 @@
 {
   "name": "dpg/dpg-wp-event-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Event API plugin to retrieve exhibitors and events",
   "keywords": [
     "Event API",
@@ -19,11 +19,17 @@
     }
   ],
   "require": {
-    "php": ">=8.0"
+    "php": ">=8.0",
+    "timber/timber": "^1.19"
   },
   "autoload": {
     "psr-4": {
       "DPG\\WordPress\\EventApi\\": "/src"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true
     }
   }
 }
