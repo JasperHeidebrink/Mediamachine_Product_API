@@ -7,23 +7,20 @@
 namespace DPG\WordPress\EventApi\Shortcodes;
 
 use DPG\WordPress\EventApi\Api\Activities;
-use DPG\WordPress\EventApi\Api\Exhibitors;
-use DPG\WordPress\EventApi\Models\Exhibitor;
+use Timber;
 
-class Program
-{
-    /**
-     * Render template with twig
-     *
-     * @return void
-     */
-    public function show_html(): void
-    {
-        $context                    = \Timber::context();
-        $context['activityList']    = Activities::getSorted();
-        $context['active_activity'] = key($context['activityList']);
-        $context['default_image']   = DPG_EVENTAPI_URL.'/assets/placeholder.png';
+class Program {
+	/**
+	 * Render template with twig
+	 *
+	 * @return void
+	 */
+	public function show_html(): void {
+		$context                    = Timber::context();
+		$context['activityList']    = Activities::getSorted();
+		$context['active_activity'] = key( $context['activityList'] );
+		$context['default_image']   = DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
-        \Timber::render('frontend/program.twig', $context);
-    }
+		Timber::render( 'frontend/program.twig', $context );
+	}
 }

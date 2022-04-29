@@ -5,136 +5,128 @@
 
 namespace DPG\WordPress\EventApi\Admin;
 
-class FlashMessages
-{
-    /**
-     * @var string[]
-     */
-    protected $classes = ['error', 'updated'];
+class FlashMessages {
+	/**
+	 * @var string[]
+	 */
+	protected $classes = [ 'error', 'updated' ];
 
-    /**
-     * @var array
-     */
-    static protected $messages = [];
+	/**
+	 * @var array
+	 */
+	static protected $messages = [];
 
-    public function __construct()
-    {
-        if (! is_admin()) {
-            return;
-        }
+	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
 
-        if (! session_id()) {
-            session_start();
-        }
-        add_action('admin_notices', [$this, 'show_flash_message']);
-    }
+		if ( ! session_id() ) {
+			session_start();
+		}
+		add_action( 'admin_notices', [ $this, 'show_flash_message' ] );
+	}
 
 
-    /**
-     * End session on logout and login
-     *
-     * @return void
-     */
-    public function clear_session(): void
-    {
-        unset($_SESSION['flash_messages']);
-    }
+	/**
+	 * End session on logout and login
+	 *
+	 * @return void
+	 */
+	public function clear_session(): void {
+		unset( $_SESSION['flash_messages'] );
+	}
 
 
-    /**
-     * Set messages in array
-     *
-     * @param array $messages Array of messages to set
-     *
-     * @return void
-     */
-    public function set_flash_messages(string $messages, string $type = 'error'): void
-    {
-        if (isset($_SESSION['flash_messages'][$type])) {
-            $_SESSION['flash_messages'] = [$type => $messages];
+	/**
+	 * Set messages in array
+	 *
+	 * @param array $messages Array of messages to set
+	 *
+	 * @return void
+	 */
+	public function set_flash_messages( string $messages, string $type = 'error' ): void {
+		if ( isset( $_SESSION['flash_messages'][ $type ] ) ) {
+			$_SESSION['flash_messages'] = [ $type => $messages ];
 
-            return;
-        }
+			return;
+		}
 
-        $_SESSION['flash_messages'][$type][] = $messages;
-    }
-
-
-    /**
-     * Get messages
-     *
-     * @return array
-     */
-    public function get_flash_messages(): array
-    {
-        if (isset($_SESSION['flash_messages'])) {
-            return $_SESSION['flash_messages'];
-        }
-
-        return [];
-    }
+		$_SESSION['flash_messages'][ $type ][] = $messages;
+	}
 
 
-    /**
-     * Queue flash messages
-     *
-     * @param string $name    Name of message. updated or error
-     * @param string $message Message body
-     *
-     * @return $this
-     */
-    public function queue_flash_message(string $name, array $message): self
-    {
-        $messages      = [];
-        $classes       = apply_filters('flashmessage_classes', $this->classes);
-        $default_class = apply_filters('flashmessages_default_class', 'updated');
+	/**
+	 * Get messages
+	 *
+	 * @return array
+	 */
+	public function get_flash_messages(): array {
+		if ( isset( $_SESSION['flash_messages'] ) ) {
+			return $_SESSION['flash_messages'];
+		}
 
-        $class = $name;
-        if (! in_array($name, $classes)) {
-            $class = $default_class;
-        }
-
-        $messages[$class][] = $message;
-
-        $this->set_flash_messages($messages);
-
-        return $this;
-    }
+		return [];
+	}
 
 
-    /**
-     * Get flash message
-     *
-     * @return mixed
-     */
-    public function show_flash_message(): void
-    {
-        $messages = $this->get_flash_messages();
+	/**
+	 * Queue flash messages
+	 *
+	 * @param string $name Name of message. updated or error
+	 * @param string $message Message body
+	 *
+	 * @return $this
+	 */
+	public function queue_flash_message( string $name, array $message ): self {
+		$messages      = [];
+		$classes       = apply_filters( 'flashmessage_classes', $this->classes );
+		$default_class = apply_filters( 'flashmessages_default_class', 'updated' );
 
-        if (is_array($messages)) {
-            foreach ($messages as $class => $message) {
-                $this->display_flash_message_html($message, $class);
-            }
-        }
+		$class = $name;
+		if ( ! in_array( $name, $classes ) ) {
+			$class = $default_class;
+		}
 
-        $this->clear_session();
-    }
+		$messages[ $class ][] = $message;
+
+		$this->set_flash_messages( $messages );
+
+		return $this;
+	}
 
 
-    /**
-     * Display message HTML
-     *
-     * @param array  $messages Array of messages
-     * @param string $class    Message CSS class
-     *
-     * @return void
-     */
-    private function display_flash_message_html(array $messages, string $class): void
-    {
-        foreach ($messages as $message) {
-            $message_html = "<div id=\"message\" class=\"{$class}\"><p>{$message}</p></div>";
+	/**
+	 * Get flash message
+	 *
+	 * @return mixed
+	 */
+	public function show_flash_message(): void {
+		$messages = $this->get_flash_messages();
 
-            echo apply_filters('flashmessage_html', $message_html, $message, $class);
-        }
-    }
+		if ( is_array( $messages ) ) {
+			foreach ( $messages as $class => $message ) {
+				$this->display_flash_message_html( $message, $class );
+			}
+		}
+
+		$this->clear_session();
+	}
+
+
+	/**
+	 * Display message HTML
+	 *
+	 * @param array  $messages Array of messages
+	 * @param string $class Message CSS class
+	 *
+	 * @return void
+	 */
+	private function display_flash_message_html( array $messages, string $class ): void {
+		foreach ( $messages as $message ) {
+			$message_html = "<div id=\"message\" class=\"{$class}\"><p>{$message}</p></div>";
+
+			echo apply_filters( 'flashmessage_html', $message_html, $message, $class );
+		}
+	}
 }
