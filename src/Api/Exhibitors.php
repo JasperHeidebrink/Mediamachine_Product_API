@@ -31,7 +31,7 @@ class Exhibitors
     /**
      * @param array $data
      *
-     * @return \DPG\WordPress\EventApi\Models\Exhibitor
+     * @return Exhibitor
      */
     public static function fillItem(array $data): Exhibitor
     {

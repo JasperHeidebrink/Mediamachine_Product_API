@@ -32,7 +32,7 @@ class Events
     /**
      * @param array $data
      *
-     * @return \DPG\WordPress\EventApi\Models\Event
+     * @return Event
      */
     public static function fillEvent(array $data): Event
     {

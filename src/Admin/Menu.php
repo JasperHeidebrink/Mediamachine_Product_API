@@ -49,7 +49,7 @@ class Menu
             'DPG EventApi Setup',
             'DPG EventApi',
             'manage_options',
-            DPG_EVENTAPI_NAME,
+            'DPG Event API',
             [
                 $this,
                 'display_plugin_setup_page',
@@ -67,68 +67,15 @@ class Menu
     public function display_plugin_setup_page(): void
     {
         $context          = \Timber::context();
-        $context['title'] = DPG_EVENTAPI_NAME;
+        $context['title'] = 'DPG Event API';
 
         \Timber::render('admin/options.twig', $context);
     }
 
     /**
-     * @return void
-     */
-    public function register_settings()
-    {
-        register_setting(
-            'eventapi_options_group',
-            'eventapi_options_group',
-            [$this, 'eventapi_options_validate']
-        );
-
-        add_settings_section(
-            'eventapi_settings',
-            __('Event settings', DPG_EVENTAPI_SLUG),
-            [$this, 'print_section_info'],
-            'eventapi_settings_admin'
-        );
-
-        add_settings_field(
-            'event_id',
-            __('Select your event', DPG_EVENTAPI_SLUG),
-            [$this, 'dropdown_events'],
-            'eventapi_settings_admin',
-            'eventapi_settings'
-        );
-
-        add_settings_field(
-            'edition_id',
-            __('Select your edition', DPG_EVENTAPI_SLUG),
-            [$this, 'dropdown_editions'],
-            'eventapi_settings_admin',
-            'eventapi_settings'
-        );
-    }
-
-    /**
-     * Sanitize each setting field as needed
-     *
-     * @param array $input Contains all settings fields as array keys
-     */
-    public function event_options_validate($input)
-    {
-        if (isset($input['event_id'])) {
-            $input['event_id'] = absint($input['event_id']);
-        }
-
-        if (isset($input['edition_id'])) {
-            $input['edition_id'] = absint($input['edition_id']);
-        }
-
-        return $input;
-    }
-
-    /**
      * Get the settings option array and print one of its values
      */
-    public function dropdown_events()
+    public function dropdown_events(): void
     {
         $events  = [
             'id'    => 0,
@@ -149,7 +96,7 @@ class Menu
     /**
      * Get the settings option array and print one of its values
      */
-    public function dropdown_editions()
+    public function dropdown_editions(): void
     {
         $options = get_option('eventapi_options_group');
 

@@ -42,7 +42,7 @@ class Shops
         $exhibitors = Exhibitors::getAll();
 
         /**
-         * @var $exhibitor \DPG\WordPress\EventApi\Models\Exhibitor
+         * @var $exhibitor Exhibitor
          */
         foreach ($exhibitors as $exhibitor) {
             foreach ($exhibitor->getBranches() as $branch) {
@@ -54,7 +54,7 @@ class Shops
                 $stand = $exhibitor->getStand();
 
                 if ($this->need_to_add_exhibitor($stand, $search_shop_query)) {
-                    array_push($data[$branch]['shops'], $exhibitor);
+                    $data[ $branch ]['shops'][] = $exhibitor;
                 }
 
                 if (empty($data[$branch]['shops'])) {
@@ -79,7 +79,7 @@ class Shops
             return true;
         }
 
-        if (strpos(strtolower($stand['name']), strtolower($search_shop_query)) !== false) {
+        if (str_contains(strtolower($stand['name']), strtolower($search_shop_query))) {
             return true;
         }
 

@@ -34,7 +34,7 @@ class Editions
     /**
      * @param array $data
      *
-     * @return \DPG\WordPress\EventApi\Models\Edition
+     * @return Edition
      */
     public static function fillEdition(array $data): Edition
     {

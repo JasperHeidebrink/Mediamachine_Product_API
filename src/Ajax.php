@@ -18,21 +18,10 @@ class Ajax
         add_action('wp_ajax_dpgeventhtml_exhibitors', [$this, 'get_dpgeventhtml_exhibitors']);
     }
 
-
-    function get_eventapi_data()
-    {
-        $activityList = Activities::getAll();
-        if (empty($activityList)) {
-            wp_send_json(['data' => 'empty']);
-        }
-
-        wp_send_json($activityList);
-    }
-
     /**
      * @return void
      */
-    public function get_dpgeventhtml_activities()
+    public function get_dpgeventhtml_activities(): void
     {
         $activityList = Activities::getAll();
         if (empty($activityList) || empty($activityList[0]->getId())) {
@@ -52,7 +41,7 @@ class Ajax
     /**
      * @return void
      */
-    public function get_dpgeventhtml_exhibitors()
+    public function get_dpgeventhtml_exhibitors(): void
     {
         $exhibitorList = Exhibitors::getAll();
         if (empty($exhibitorList) || empty($exhibitorList[0]->getId())) {

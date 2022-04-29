@@ -38,7 +38,12 @@ class Timber
         );
     }
 
-    public function add_functions(\Twig\Environment $twig)
+    /**
+     * @param \Twig\Environment $twig
+     *
+     * @return void
+     */
+    public function add_functions(\Twig\Environment $twig): void
     {
         $twig->addFunction(
             new \Twig\TwigFunction(
@@ -50,7 +55,12 @@ class Timber
         return $twig;
     }
 
-    public function add_filters(\Twig\Environment $twig)
+    /**
+     * @param \Twig\Environment $twig
+     *
+     * @return void
+     */
+    public function add_filters(\Twig\Environment $twig): void
     {
         $twig->addFilter(
             new \Twig\TwigFilter(
@@ -74,7 +84,7 @@ class Timber
      *
      * @return void
      */
-    public function eventapi_settings_form(string $section, $submitText = '')
+    public function eventapi_settings_form(string $section, $submitText = ''): void
     {
         settings_fields($section);
         do_settings_sections($section);
@@ -86,9 +96,9 @@ class Timber
      *
      * @return void
      */
-    public function md5(string $string)
+    public function md5(string $string): string
     {
-        echo md5($string);
+        return md5($string);
     }
 
     /**
@@ -97,7 +107,7 @@ class Timber
      *
      * @return string
      */
-    public function local_date(string $string, string $format = 'l j F Y'):string
+    public function local_date(string $string, string $format = 'l j F Y'): string
     {
         return date_i18n($format, strtotime($string));
     }

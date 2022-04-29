@@ -26,23 +26,4 @@ class Program
 
         \Timber::render('frontend/program.twig', $context);
     }
-
-    /**
-     * @param array  $stand
-     * @param string $search_shop_query
-     *
-     * @return bool
-     */
-    private function need_to_add_exhibitor(array $stand, string $search_shop_query = ''): bool
-    {
-        if (empty($search_shop_query)) {
-            return true;
-        }
-
-        if (strpos(strtolower($stand['name']), strtolower($search_shop_query)) !== false) {
-            return true;
-        }
-
-        return false;
-    }
 }

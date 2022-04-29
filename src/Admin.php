@@ -19,7 +19,11 @@ class Admin
         }
 
         if (! is_plugin_active("sm-main/sm-main.php")) {
-            add_action('admin_notices', [$this, 'requirements_notices']);
+            add_action('admin_notices', [$this, 'requirement_plugin_notice']);
+        }
+
+        if (! defined('EVENTAPI_BASEURI')) {
+            add_action('admin_notices', [$this, 'requirement_setting_notice']);
         }
 
         $settings = new Settings();
@@ -34,11 +38,24 @@ class Admin
     /**
      * @return void
      */
-    public function requirements_notices(): void
+    public function requirement_plugin_notice(): void
     {
         echo '<div class="notice notice-warning is-dismissible"><p>';
         esc_html_e(
             'DPG Event API plugin is currently not working: plugin sm-main is needed. Please install or activate the plugin.',
+            DPG_EVENTAPI_SLUG
+        );
+        echo '</p></div>';
+    }
+
+    /**
+     * @return void
+     */
+    public function requirement_setting_notice(): void
+    {
+        echo '<div class="notice notice-warning is-dismissible"><p>';
+        esc_html_e(
+            'DPG Event API plugin is currently not working: EVENTAPI_BASEURI must be defined.',
             DPG_EVENTAPI_SLUG
         );
         echo '</p></div>';

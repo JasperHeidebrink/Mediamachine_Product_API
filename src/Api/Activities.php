@@ -34,7 +34,7 @@ class Activities
     /**
      * @return array
      */
-    public static function getSorted(bool $hideArchive = true): array
+    public static function getSorted(): array
     {
         $current_edition_id = (int)get_option('eventapi_edition_id');
         $activities         = EventApi::get('activities',
@@ -50,20 +50,13 @@ class Activities
 
         $activities = self::splitActivitiesFromTimeslots($activities);
 
-        return $activities;
-
-//        echo '<pre style="background:#0f0; padding: 2rem; width:100%; z-index:9999">';
-//        print_r($activities);
-//        echo '</pre>';
-//            die(__FILE__.':'.__LINE__);
-
         return self::activitiesSort($activities);
     }
 
     /**
      * @param array $data
      *
-     * @return \DPG\WordPress\EventApi\Models\Activity
+     * @return Activity
      */
     public static function fillItem(array $data): Activity
     {
@@ -77,6 +70,11 @@ class Activities
         );
     }
 
+    /**
+     * @param array $activities
+     *
+     * @return array
+     */
     private static function splitActivitiesFromTimeslots(array $activities)
     {
         $dayActivities = [];
@@ -116,7 +114,7 @@ class Activities
                     'timestampStart' => $timebox['timestampStart'] ?? 0,
                     'timestampEnd'   => $timebox['timestampEnd'] ?? 0,
                     'activityId'     => $activity['id'],
-                    'externalLink'   => (strpos($readmore, get_home_url()) === false),
+                    'externalLink'   => (! str_contains($readmore, get_home_url())),
                 ];
             }
         }
@@ -124,22 +122,27 @@ class Activities
         return $dayActivities;
     }
 
+    /**
+     * @param array $activities
+     *
+     * @return array
+     */
     private static function activitiesSort(array $activities): array
     {
         // sort on category
         ksort($activities);
 
         // sort within a category on days
-        foreach ($activities as &$category_days_actitivies) {
-            uksort($category_days_actitivies, function ($a, $b)
+        foreach ($activities as &$days_actitivies) {
+            uksort($days_actitivies, function ($a, $b)
             {
                 return strcmp($a, $b);
             });
         }
 
         // sort within a day on time slot then on title
-        foreach ($activities as &$category_days_actitivies) {
-            foreach ($category_days_actitivies as &$category_day_actitivies) {
+        foreach ($activities as &$days_actitivies) {
+            foreach ($days_actitivies as &$category_day_actitivies) {
                 usort($category_day_actitivies, function ($a, $b)
                 {
                     if ($a['timestampStart'] === $b['timestampStart']) {

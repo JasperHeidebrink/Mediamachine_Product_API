@@ -56,7 +56,7 @@ class EventApi
         $route        = self::getRoute($endpoint, $params);
         $transientKey = DPG_EVENTAPI_SLUG.md5('get'.$route);
         if (false !== ($output = get_transient($transientKey))) {
-//            return $output;
+            return $output;
         }
         $response = self::request('GET', $route, $queryRoute);
         $output   = self::output($response);
