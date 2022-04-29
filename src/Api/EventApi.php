@@ -1,6 +1,6 @@
 <?php
 
-namespace DPG\WordPress\EventApi;
+namespace DPG\WordPress\EventApi\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
@@ -52,11 +52,17 @@ class EventApi
      */
     public static function get(string $endpoint, array $params = [], array $queryParams = []): array
     {
-        $queryRoute = array_merge($queryParams, ['access_token' => self::getAccessToken()]);
-        $route      = self::getRoute($endpoint, $params);
-        $response   = self::request('GET', $route, $queryRoute);
+        $queryRoute   = array_merge($queryParams, ['access_token' => self::getAccessToken()]);
+        $route        = self::getRoute($endpoint, $params);
+        $transientKey = DPG_EVENTAPI_SLUG.md5('get'.$route);
+        if (false !== ($output = get_transient($transientKey))) {
+            return $output;
+        }
+        $response = self::request('GET', $route, $queryRoute);
+        $output   = self::output($response);
+        set_transient($transientKey, $output);
 
-        return self::output($response);
+        return $output;
     }
 
     /**
@@ -68,10 +74,16 @@ class EventApi
      */
     public static function post(string $endpoint, array $params, array $data): array
     {
-        $route    = self::getRoute($endpoint, $params);
+        $route        = self::getRoute($endpoint, $params);
+        $transientKey = DPG_EVENTAPI_SLUG.md5('post'.$route);
+        if (false !== ($output = get_transient($transientKey))) {
+            return $output;
+        }
         $response = self::request('POST', $route, ['access_token' => self::getAccessToken()]);
+        $output   = self::output($response);
+        set_transient($transientKey, $output);
 
-        return self::output($response);
+        return $output;
     }
 
     /**

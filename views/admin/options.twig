@@ -1,0 +1,45 @@
+<div class="wrap">
+
+    <h2>{{ title }}</h2>
+
+    <div class="card" style="min-width:100%;">
+        <h2>Usage:</h2>
+        Use one of these shortcodes to display a specific part of the Events.<br>
+        Copy the complete shortcode and place the code inside the content field of a specific page.<br>
+        <p>
+            <code>[dpg-ep-activities]</code> ( display a list with all the activities, no format )<br>
+        </p>
+        <p>
+            <code>[dpg-ep-shops]</code> ( display all the shops, including a search option, organised by category )<br>
+        </p>
+        <p>
+            <code>[dpg-ep-program]</code> ( display the program organised by category and date )<br>
+        </p>
+    </div>
+
+    <div class="card" style="min-width:50%;">
+        <form method="post" action="options.php">
+            {{ eventapi_settings_form('eventapi_settings_admin') }}
+        </form>
+    </div>
+
+    <div class="card" style="min-width:50%;">
+        <h2>Event data:</h2>
+        Display an example list of some event items.<br>
+        <button id="activities" class="ajaxload ajaxload_activities button button-primary">
+            {{ __('Show Activities', DPG_EVENTAPI_SLUG) }}
+        </button>
+        <button id="exhibitors" class="ajaxload ajaxload_exhibitors button button-primary">
+            {{ __('Show Exhibitors', DPG_EVENTAPI_SLUG) }}
+        </button>
+        <hr>
+        <div class="ajaxdata"></div>
+    </div>
+
+    <div class="card" style="min-width:50%;">
+        <form method="post" action="options.php">
+            {{ eventapi_settings_form('eventapi_clear_cache_admin', 'Reload Event Data') }}
+        </form>
+    </div>
+
+</div>
