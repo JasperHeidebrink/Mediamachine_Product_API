@@ -16,22 +16,25 @@ class Admin {
 			return;
 		}
 
-		if ( ! is_plugin_active( "sm-main/sm-main.php" ) ) {
-			add_action( 'admin_notices', [ $this, 'requirement_plugin_notice' ] );
-		}
-
-		if ( ! defined( 'EVENTAPI_BASEURI' ) ) {
-			add_action( 'admin_notices', [ $this, 'requirement_setting_notice' ] );
-		}
-
 		$settings = new Settings();
 		$menu     = new Menu();
 		add_action( 'admin_init', [ $settings, 'register_settings' ] );
 		add_action( 'admin_init', [ $settings, 'register_settings_cache' ] );
 		add_action( 'admin_menu', [ $menu, 'add_event_page' ] );
+        add_action( 'admin_init', [ $this, 'check_requirements' ] );
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueScripts' ] );
 	}
+
+    public function check_requirements() {
+        if ( ! is_plugin_active( "sm-main/sm-main.php" ) ) {
+            add_action( 'admin_notices', [ $this, 'requirement_plugin_notice' ] );
+        }
+
+        if ( ! defined( 'EVENTAPI_BASEURI' ) ) {
+            add_action( 'admin_notices', [ $this, 'requirement_setting_notice' ] );
+        }
+    }
 
 	/**
 	 * @return void
