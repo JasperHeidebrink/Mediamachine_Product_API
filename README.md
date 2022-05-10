@@ -19,7 +19,7 @@ There are a view optional short tags that can be used:
 ## Release notes
 
 ### 1.0.7
-
+Always send an array to display_flash_message_html
 
 ### 1.0.6
 Set correct return type to timber
