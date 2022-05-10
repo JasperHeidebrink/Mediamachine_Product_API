@@ -63,7 +63,7 @@ class Settings {
 	/**
 	 * @return void
 	 */
-	public function clear_cache() {
+	public function clear_cache():void {
 		global $wpdb;
 		$query = $wpdb->prepare(
 			"DELETE FROM $wpdb->options WHERE option_name LIKE %s",

@@ -26,7 +26,10 @@ class Admin {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueScripts' ] );
 	}
 
-    public function check_requirements() {
+    /**
+     * @return void
+     */
+    public function check_requirements():void {
         if ( ! is_plugin_active( "sm-main/sm-main.php" ) ) {
             add_action( 'admin_notices', [ $this, 'requirement_plugin_notice' ] );
         }

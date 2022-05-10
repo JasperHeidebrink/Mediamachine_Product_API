@@ -42,9 +42,9 @@ class Timber {
 	/**
 	 * @param Environment $twig
 	 *
-	 * @return void
+	 * @return Environment
 	 */
-	public function add_functions( Environment $twig ): void {
+	public function add_functions( Environment $twig ): Environment {
 		$twig->addFunction(
 			new TwigFunction(
 				'eventapi_settings_form',
@@ -58,9 +58,9 @@ class Timber {
 	/**
 	 * @param Environment $twig
 	 *
-	 * @return void
+	 * @return Environment
 	 */
-	public function add_filters( Environment $twig ): void {
+	public function add_filters( Environment $twig ): Environment {
 		$twig->addFilter(
 			new TwigFilter(
 				'md5',
