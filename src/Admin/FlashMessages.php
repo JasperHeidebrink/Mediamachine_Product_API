@@ -27,7 +27,6 @@ class FlashMessages {
 		add_action( 'admin_notices', [ $this, 'show_flash_message' ] );
 	}
 
-
 	/**
 	 * End session on logout and login
 	 *
@@ -36,7 +35,6 @@ class FlashMessages {
 	public function clear_session(): void {
 		unset( $_SESSION['flash_messages'] );
 	}
-
 
 	/**
 	 * Set messages in array
@@ -55,7 +53,6 @@ class FlashMessages {
 		$_SESSION['flash_messages'][ $type ][] = $messages;
 	}
 
-
 	/**
 	 * Get messages
 	 *
@@ -68,7 +65,6 @@ class FlashMessages {
 
 		return [];
 	}
-
 
 	/**
 	 * Queue flash messages
@@ -95,24 +91,29 @@ class FlashMessages {
 		return $this;
 	}
 
-
 	/**
 	 * Get flash message
 	 *
 	 * @return mixed
 	 */
-	public function show_flash_message(): void {
-		$messages = $this->get_flash_messages();
+    public function show_flash_message(): void
+    {
+        $messages = $this->get_flash_messages();
 
-		if ( is_array( $messages ) ) {
-			foreach ( $messages as $class => $message ) {
-				$this->display_flash_message_html( $message, $class );
-			}
-		}
+        if ( ! is_array($messages) ) {
+            $this->display_flash_message_html([$messages], 'error');
+            $this->clear_session();
+        }
 
-		$this->clear_session();
-	}
+        foreach ($messages as $class => $message) {
+            if ( ! is_array($message) ) {
+                $message = [$message];
+            }
+            $this->display_flash_message_html($message, $class);
+        }
 
+        $this->clear_session();
+    }
 
 	/**
 	 * Display message HTML

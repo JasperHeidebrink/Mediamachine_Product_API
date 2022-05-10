@@ -18,6 +18,9 @@ There are a view optional short tags that can be used:
 
 ## Release notes
 
+### 1.0.7
+
+
 ### 1.0.6
 Set correct return type to timber
 
