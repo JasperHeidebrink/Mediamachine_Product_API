@@ -18,6 +18,17 @@ There are a view optional short tags that can be used:
 
 ## Release notes
 
+### 1.0.6
+Set correct return type to timber
+
+### 1.0.5
+Check requirements on init
+
+### 1.0.4
+Cleanup Admin triggers
+A bit of optimizing and better checks
+Code style
+
 ### 1.0.3
 Added Twig templating
 It's possible to create a custom template for a theme. 
