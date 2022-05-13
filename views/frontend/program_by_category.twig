@@ -1,0 +1,94 @@
+<div class="c-event-activities">
+
+    <nav class="c-event-activities__nav">
+        {% for category_name, unused in activityListByTimeslot %}
+            <a data-trigger="event-activities-category-{{ category_name|md5 }}"
+               data-trigger-group="event-activities"
+               href="#"
+               class="c-event-activities__navitem"
+               {% if active_activity == category_name %}data-active="true"{% endif %}
+            >{{ category_name|capitalize }}</a>
+        {% endfor %}
+    </nav>
+
+    {% for category_name, days_activities in activityListByTimeslot %}
+        <div class="c-event-activities__category"
+             data-target="event-activities-category-{{ category_name|md5 }}"
+             data-target-name="event-activities-category-{{ category_name }}"
+             data-target-group="event-activities">
+            {% for day, day_activities in days_activities %}
+                {% set category_day_hash = category_name ~ day %}
+                <div class="c-event-activities__day">
+                    <a href="#" class="c-event-activities__day-title"
+                       data-trigger="event-activities-day-{{ category_day_hash|md5 }}">
+                        <div>
+                            {{ day|localDate("l j F Y")|capitalize }}
+                        </div>
+                        <svg class="c-event-activities__day-icon" height="20" width="20"
+                             viewBox="0 0 1792 1792"
+                             xmlns="https://www.w3.org/2000/svg">
+                            <path d="m1152 896q0 26-19 45l-448 448q-19 19-45 19t-45-19-19-45v-896q0-26 19-45t45-19 45 19l448 448q19 19 19 45z"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="c-event-activities__day-activities"
+                     data-target="event-activities-day-{{ category_day_hash|md5 }}">
+                    {% for day_activity in day_activities %}
+                        <div class="c-event-activities__activity">
+                            {% set day_activity_hash = day_activity.activityId ~ day_activity.timestampStart %}
+                            <a href="#"
+                               data-trigger="event-activities-activity-{{ day_activity_hash|md5 }}"
+                               class="c-event-activities__activity-header">
+                                <div class="c-event-activities__activity-title">
+                                    {{ day_activity.title }}
+                                </div>
+                                <div class="c-event-activities__activity-time">
+                                    {{ day_activity.start }} - {{ day_activity.end }}
+                                </div>
+                            </a>
+
+                            <div class="c-event-activities__activity-details"
+                                 data-target="event-activities-activity-{{ day_activity_hash|md5 }}">
+                                <div class="c-event-activities__activity-image">
+                                    <img src="{{ day_activity.image | default(default_image) }}"
+                                         alt="{{ day_activity.title }}">
+                                </div>
+
+                                <div class="c-event-activities__activity-content">
+                                    <div class="c-event-activities__activity-content-title">
+                                        {{ day_activity.title }}
+                                    </div>
+                                    <div class="c-event-activities__activity-content-time">
+                                        {{ day|localDate("a")|capitalize }}
+                                        {{ day_activity.start }} - {{ day_activity.end }}
+                                    </div>
+                                    <div class="c-event-activities__activity-content-location">
+                                        {{ day_activity.location }} - {{ day_activity.sublocation }}
+                                    </div>
+
+                                    <div class="c-event-activities__activity-description">
+                                        {{ day_activity.description }}
+
+                                        {% if day_activity.readmore %}
+                                            <br><br>
+                                            <a href="{{ day_activity.readmore }}"
+                                               class="btn btn-primary"
+                                                    {% if day_activity.externalLink %} target="_blank"{% endif %}
+                                            >
+                                                Lees meer
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+</div>

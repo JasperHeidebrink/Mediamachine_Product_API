@@ -16,6 +16,7 @@ class Shortcode {
 	public function __construct() {
 		add_shortcode( 'dpg-ep-activities', [ new Activity, 'show_html' ] );
 		add_shortcode( 'dpg-ep-shops', [ new Shops, 'show_html' ] );
+		add_shortcode( 'dpg-ep-program-category', [ new Program, 'show_category_html' ] );
 		add_shortcode( 'dpg-ep-program', [ new Program, 'show_html' ] );
 	}
 }

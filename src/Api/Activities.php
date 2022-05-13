@@ -8,7 +8,7 @@ class Activities {
 	/**
 	 * @return array
 	 */
-	public static function getAll( bool $hideArchive = true ): array {
+	public static function getAll( bool $hideArchive = true, bool $returnArray = false ): array {
 		$current_edition_id = (int) get_option( 'eventapi_edition_id' );
 		$response           = EventApi::get( 'activities', [ 'editionId' => $current_edition_id ] );
 
@@ -23,8 +23,10 @@ class Activities {
 			if ( $hideArchive && ! empty( $item['archived'] ) ) {
 				continue;
 			}
-			$events[] = self::fillItem( $item );
+			$events[ urlencode( trim( $item['title'] ) ) ] = $returnArray ? $item : self::fillItem( $item );
 		}
+
+		ksort( $events );
 
 		return $events;
 	}
@@ -32,7 +34,7 @@ class Activities {
 	/**
 	 * @return array
 	 */
-	public static function getSorted(): array {
+	public static function getGroupedByTimeslot(): array {
 		$current_edition_id = (int) get_option( 'eventapi_edition_id' );
 		$activities         = EventApi::get(
 			'activities',
@@ -52,18 +54,77 @@ class Activities {
 	}
 
 	/**
+	 * @return array
+	 */
+	public static function getDaysList(): array {
+		$current_edition_id = (int) get_option( 'eventapi_edition_id' );
+		$activities         = EventApi::get(
+			'activities',
+			[ 'editionId' => $current_edition_id ],
+			[ 'expand' => true ]
+		);
+
+		if ( empty( $activities ) ) {
+			return [
+				self::fillItem( [ 'title' => 'No activity available' ] ),
+			];
+		}
+		$dayActivities = [];
+		foreach ( $activities as $activity ) {
+			$dayActivities[ $activity['dateActive'] ] = $activity;
+		}
+
+		ksort( $dayActivities );
+
+		return $dayActivities;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getCategoryList(): array {
+		$current_edition_id = (int) get_option( 'eventapi_edition_id' );
+		$activities         = EventApi::get(
+			'activities',
+			[ 'editionId' => $current_edition_id ],
+			[ 'expand' => true ]
+		);
+
+		if ( empty( $activities ) ) {
+			return [
+				self::fillItem( [ 'title' => 'No activity available' ] ),
+			];
+		}
+		$dayActivities = [];
+		foreach ( $activities as $activity ) {
+			$dayActivities[ $activity['type'] ] = $activity;
+		}
+
+		ksort( $dayActivities );
+
+		return $dayActivities;
+	}
+
+	/**
 	 * @param array $data
 	 *
 	 * @return Activity
 	 */
 	public static function fillItem( array $data ): Activity {
+		$timebox = $data['timeboxes'][0] ?? [ 'location' => '', 'sublocation' => '' ];
+
 		return new Activity(
 			$data['id'] ?? 0,
-			$data['title'] ?? '',
-			$data['type'] ?? '',
+			wp_strip_all_tags( $data['title'] ?? '' ),
+			wp_strip_all_tags( $data['type'] ?? '' ),
 			(int) $data['active'] ?? 1,
 			$data['dateActive'] ?? '',
-			$data['location'] ?? 1,
+			wp_strip_all_tags( $data['media'][0]['url'] ?? '' ),
+			wp_strip_all_tags( $timebox['location'] ?? '' ),
+			wp_strip_all_tags( $timebox['sublocation'] ?? '' ),
+			$data['website'] ?? '',
+			$data['readmore'] ?? '',
+			$data['timeboxes'] ?? [],
 		);
 	}
 

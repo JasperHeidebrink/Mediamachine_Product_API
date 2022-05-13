@@ -1,94 +1,89 @@
 <div class="c-event-activities">
 
-    <nav class="c-event-activities__nav">
-        {% for category_name, unused in activityList %}
-            <a data-trigger="event-activities-category-{{ category_name|md5 }}"
-               data-trigger-group="event-activities"
-               href="#"
-               class="c-event-activities__navitem"
-               {% if active_activity == category_name %}data-active="true"{% endif %}
-            >{{ category_name|capitalize }}</a>
-        {% endfor %}
-    </nav>
-
-    {% for category_name, days_activities in activityList %}
-        <div class="c-event-activities__category"
-             data-target="event-activities-category-{{ category_name|md5 }}"
-             data-target-name="event-activities-category-{{ category_name }}"
-             data-target-group="event-activities">
-            {% for day, day_activities in days_activities %}
-                {% set category_day_hash = category_name ~ day %}
-                <div class="c-event-activities__day">
-                    <a href="#" class="c-event-activities__day-title"
-                       data-trigger="event-activities-day-{{ category_day_hash|md5 }}">
-                        <div>
-                            {{ day|localDate("l j F Y")|capitalize }}
-                        </div>
-                        <svg class="c-event-activities__day-icon" height="20" width="20"
-                             viewBox="0 0 1792 1792"
-                             xmlns="https://www.w3.org/2000/svg">
-                            <path d="m1152 896q0 26-19 45l-448 448q-19 19-45 19t-45-19-19-45v-896q0-26 19-45t45-19 45 19l448 448q19 19 19 45z"/>
-                        </svg>
-                    </a>
-                </div>
-
-                <div class="c-event-activities__day-activities"
-                     data-target="event-activities-day-{{ category_day_hash|md5 }}">
-                    {% for day_activity in day_activities %}
-                        <div class="c-event-activities__activity">
-                            {% set day_activity_hash = day_activity.activityId ~ day_activity.timestampStart %}
-                            <a href="#"
-                               data-trigger="event-activities-activity-{{ day_activity_hash|md5 }}"
-                               class="c-event-activities__activity-header">
-                                <div class="c-event-activities__activity-title">
-                                    {{ day_activity.title }}
-                                </div>
-                                <div class="c-event-activities__activity-time">
-                                    {{ day_activity.start }} - {{ day_activity.end }}
-                                </div>
-                            </a>
-
-                            <div class="c-event-activities__activity-details"
-                                 data-target="event-activities-activity-{{ day_activity_hash|md5 }}">
-                                <div class="c-event-activities__activity-image">
-                                    <img src="{{ day_activity.image | default(default_image) }}"
-                                         alt="{{ day_activity.title }}">
-                                </div>
-
-                                <div class="c-event-activities__activity-content">
-                                    <div class="c-event-activities__activity-content-title">
-                                        {{ day_activity.title }}
-                                    </div>
-                                    <div class="c-event-activities__activity-content-time">
-                                        {{ day|localDate("a")|capitalize }}
-                                        {{ day_activity.start }} - {{ day_activity.end }}
-                                    </div>
-                                    <div class="c-event-activities__activity-content-location">
-                                        {{ day_activity.location }} - {{ day_activity.sublocation }}
-                                    </div>
-
-                                    <div class="c-event-activities__activity-description">
-                                        {{ day_activity.description }}
-
-                                        {% if day_activity.readmore %}
-                                            <br><br>
-                                            <a href="{{ day_activity.readmore }}"
-                                               class="btn btn-primary"
-                                                    {% if day_activity.externalLink %} target="_blank"{% endif %}
-                                            >
-                                                Lees meer
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    {% endfor %}
-                </div>
-
-            {% endfor %}
+    <div class="event__filters c-exhibitors__filters s-grid">
+        <div class="event__searchgroup s-grid__column s-grid__column--4-12">
+            <div class="searchgroup">
+                <h3 class="searchgroup__label">Zoek</h3>
+                <span class="searchgroup__holder">
+                        <input type="text"
+                               placeholder="zoeken"
+                               name="search_participants_query"
+                               value=""
+                               class="text">
+                    </span>
+            </div>
         </div>
-    {% endfor %}
+        <div class="event__selectfilter s-grid__column s-grid__column--4-12">
+            <div class="field-group">
+                <h3 class="selectfilter__label">Kies een activiteit</h3>
+                <select name="event__selectfilter_category"
+                        class="custom-select-dropdown hasCustomSelect">
+                    <option value="0">Alle types</option>
+                    {% for category_name, unused in categoryList %}
+                        <option value="{{ category_name|capitalize }}"
+                                data-trigger-group="event-activities"
+                                class="c-event-activities__navitem"
+                                {% if active_activity == category_name %}selected="selected"{% endif %}
+                        >{{ category_name|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="event__selectfilter s-grid__column s-grid__column--3-12">
+            <div class="field-group">
+                <h3 class="selectfilter__label">Kies een datum</h3>
+                <select name="event__selectfilter_day"
+                        class="custom-select-dropdown hasCustomSelect">
+                    <option value="0" selected="selected">Alle datums</option>
+                    {% for day, day_activities in dayList %}
+                        <option value="{{ day_activities.dateActive }}"
+                                data-trigger-group="event-activities"
+                                class="c-event-activities__navitem"
+                                {% if active_activity == day %}selected="selected"{% endif %}
+                        >{{ day|localDate("j F Y")|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
 
+    <hr>
+
+    <div class="event__holder s-grid">
+        {% for activity_name, activity in activityList %}
+            <div class="event__block s-grid__column s-grid__column--4-12"
+                 data-category="{{ activity.type }}"
+                 data-day="{{ activity.dateActive }}">
+                <div class="event__mediaholder">
+                    <div class="event__media">
+                        <img src="{{ activity.media.0.url | default(default_image) }}"
+                             alt="{{ activity.title }}">
+                    </div>
+                </div>
+
+                <div class="event__title website readmore">
+                    <p class="event__title-text">
+                        {{ activity.title }}
+                    </p>
+                    <div class="event__btn-container">
+                        <p class="event__card-text event__card-text--uppercase">
+                            {{ activity.location }}: {{ activity.sublocation }}
+                        </p>
+                        <a href="{{ activity.website }}"
+                           target="_blank"
+                           class="event__btn event__btn--website">
+                            BEKIJK DE WEBSITE
+                        </a>
+                        <a href=""
+                           target="_blank"
+                           class="event__btn">
+                            BOEK JE TICKET NU
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
 </div>

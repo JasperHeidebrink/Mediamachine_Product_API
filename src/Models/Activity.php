@@ -26,7 +26,27 @@ class Activity {
 	/**
 	 * @var string
 	 */
+	protected string $media;
+	/**
+	 * @var string
+	 */
 	protected string $location;
+	/**
+	 * @var string
+	 */
+	protected string $sublocation;
+	/**
+	 * @var string
+	 */
+	protected string $readmore;
+	/**
+	 * @var string
+	 */
+	protected string $website;
+	/**
+	 * @var array
+	 */
+	protected array $timebox;
 
 	public function __construct(
 		string $id,
@@ -34,14 +54,24 @@ class Activity {
 		string $type = 'Programma',
 		string $active = '',
 		string $dateActive = '',
-		string $location = ''
+		string $media = '',
+		string $location = '',
+		string $sublocation = '',
+		string $readmore = '',
+		string $website = '',
+		array $timebox = [],
 	) {
 		$this->id         = $id;
 		$this->type       = $type;
 		$this->title      = $title;
 		$this->active     = $active ?? 1;
 		$this->dateActive = $dateActive;
+		$this->media   = $media;
 		$this->location   = $location;
+		$this->sublocation   = $sublocation;
+		$this->readmore   = $readmore;
+		$this->website    = $website;
+		$this->timebox    = $timebox ?? [];
 	}
 
 	/**
@@ -82,7 +112,42 @@ class Activity {
 	/**
 	 * @return string
 	 */
+	public function getMedia(): string {
+		return $this->media;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getLocation(): string {
 		return $this->location;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSublocation(): string {
+		return $this->sublocation;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getReadmore(): string {
+		return $this->readmore;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWebsite(): string {
+		return $this->website;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getTimebox(): array {
+		return $this->timebox;
 	}
 }
