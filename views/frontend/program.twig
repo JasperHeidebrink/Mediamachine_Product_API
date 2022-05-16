@@ -50,6 +50,9 @@
     <hr>
 
     <div class="event__holder s-grid">
+        <div class="event_empty_result" style="display: none;">
+            Er zijn geen activiteiten gevonden, probeer het eens met minder <a href="./">zoekcreteria</a>.
+        </div>
         {% for activity_name, activity in activityList %}
             <div class="event__block s-grid__column s-grid__column--4-12"
                  data-category="{{ activity.type }}"

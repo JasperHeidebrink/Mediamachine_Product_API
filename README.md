@@ -19,6 +19,9 @@ There are a view optional short tags that can be used:
 
 ## Release notes
 
+### 1.1.1
+Display a text when no result is found with the current filter.
+
 ### 1.1.0
 Added program grouped by category
 Added program ordered by activity
