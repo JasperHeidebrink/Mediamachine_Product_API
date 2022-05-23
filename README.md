@@ -19,6 +19,9 @@ There are a view optional short tags that can be used:
 
 ## Release notes
 
+### 1.1.2
+Check if the api view dir exists before implementing in Timber
+
 ### 1.1.1
 Display a text when no result is found with the current filter.
 

@@ -30,9 +30,18 @@ class Timber {
 	 * @return array
 	 */
 	public function set_timber_path( array $paths ): array {
+		if ( is_dir( trailingslashit( get_theme_file_path() ) . 'dpg-wp-event-api-views/' ) ) {
+			return array_merge(
+				[
+					trailingslashit( get_theme_file_path() ) . 'dpg-wp-event-api-views/',
+					DPG_EVENTAPI_PATH . 'views/',
+				],
+				$paths
+			);
+		}
+
 		return array_merge(
 			[
-				trailingslashit( get_theme_file_path() ) . 'dpg-wp-event-api-views/',
 				DPG_EVENTAPI_PATH . 'views/',
 			],
 			$paths
