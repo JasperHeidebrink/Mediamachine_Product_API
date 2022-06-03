@@ -57,31 +57,22 @@
             <div class="event__block s-grid__column s-grid__column--4-12"
                  data-category="{{ activity.type }}"
                  data-day="{{ activity.dateActive }}">
-                <div class="event__mediaholder">
-                    <div class="event__media">
-                        <img src="{{ activity.media.0.url | default(default_image) }}"
-                             alt="{{ activity.title }}">
-                    </div>
-                </div>
-
-                <div class="event__title website readmore">
-                    <p class="event__title-text">
-                        {{ activity.title }}
-                    </p>
-                    <div class="event__btn-container">
-                        <p class="event__card-text event__card-text--uppercase">
-                            {{ activity.location }}: {{ activity.sublocation }}
-                        </p>
-                        <a href="{{ activity.website }}"
-                           target="_blank"
-                           class="event__btn event__btn--website">
-                            BEKIJK DE WEBSITE
-                        </a>
-                        <a href=""
-                           target="_blank"
-                           class="event__btn">
-                            BOEK JE TICKET NU
-                        </a>
+                <div class="s-square">
+                    <div class="s-square__content">
+                        <div class="c-card">
+                            <img class="c-card__image" src="{{ activity.media.0.url | default(default_image) }}" alt="{{ activity.title }}">
+                            <div class="c-card__title event__title">
+                                <p class="c-article__title h3">{{ activity.title }}</p>
+                                <p>Podium: Hoofdpodium</p>
+                                <a href="{{ activity.website }}" class="c-button c-button--card">
+                                    BEKIJK DE WEBSITE
+                                </a>
+                                {# @TODO: This needs to replaced with the book ticket url when ready #}
+                                <a href="{{ activity.readmore }}" class="c-button c-button--card">
+                                    BOEK JE TICKET NU
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
