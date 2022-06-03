@@ -19,6 +19,9 @@ There are a view optional short tags that can be used:
 
 ## Release notes
 
+### 1.1.3
+Use the readme field for the ticket link
+
 ### 1.1.2
 Check if the api view dir exists before implementing in Timber
 
