@@ -117,7 +117,7 @@ class Activities {
 			$data['id'] ?? 0,
 			wp_strip_all_tags( $data['title'] ?? '' ),
 			wp_strip_all_tags( $data['type'] ?? '' ),
-			(int) $data['active'] ?? 1,
+			intval( $data['active'] ?? 1 ),
 			$data['dateActive'] ?? '',
 			wp_strip_all_tags( $data['media'][0]['url'] ?? '' ),
 			wp_strip_all_tags( $timebox['location'] ?? '' ),
