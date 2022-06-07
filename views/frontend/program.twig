@@ -63,7 +63,7 @@
                             <img class="c-card__image" src="{{ activity.media.0.url | default(default_image) }}" alt="{{ activity.title }}">
                             <div class="c-card__title event__title">
                                 <p class="c-article__title h3">{{ activity.title }}</p>
-                                <p>Podium: Hoofdpodium</p>
+                                <p>{{ activity.location }}: {{ activity.sublocation }}</p>
                                 <a href="{{ activity.website }}" class="c-button c-button--card">
                                     BEKIJK DE WEBSITE
                                 </a>
