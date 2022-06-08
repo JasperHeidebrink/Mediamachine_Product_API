@@ -9,7 +9,7 @@
  * @author    DPG Media Magazines <wordpress_beheer.nl@dpgmediamagazines.nl>
  * @copyright 2022 DPG Media Magazines
  * @license   https://www.dpgmediamagazines.nl Closed
- * @version   GIT: 1.1.3
+ * @version   GIT: 1.1.4
  * @link      https://www.dpgmediamagazines.nl
  * @since     1.0.0
  *
@@ -17,7 +17,7 @@
  * Plugin Name:       DPG Event API integration
  * Plugin URI:        https://www.dpgmediamagazines.nl
  * Description:       DPG plugin that implement the Event API to retrieve exhibitors and events
- * Version:           1.1.3
+ * Version:           1.1.4
  * Author:            DPG Media Magazines
  * Author URI:        https://www.dpgmediamagazines.nl
  * License:           closed
