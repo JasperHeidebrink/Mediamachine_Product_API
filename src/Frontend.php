@@ -13,13 +13,6 @@ class Frontend {
 	 */
 	public function enqueueScripts(): void {
 
-		wp_enqueue_style(
-			'dpg_eventapi',
-			DPG_EVENTAPI_URL . 'assets/default.css',
-			[],
-			DPG_EVENTAPI_VERSION
-		);
-
 		wp_enqueue_script(
 			'dpg_eventapi',
 			DPG_EVENTAPI_URL . 'assets/default.js',

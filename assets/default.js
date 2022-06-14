@@ -6,7 +6,7 @@ const EVENTAPI_SHOW_SPEED = 100;
 
 jQuery(document).ready(function ($) {
 
-    $('select.hasCustomSelect').change(function () {
+    $('select[name^="event__selectfilter"]').change(function () {
         DpgEventApi_apply_filter();
     });
     $('input[name="search_participants_query"]').keyup(function () {
