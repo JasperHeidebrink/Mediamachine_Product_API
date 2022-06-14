@@ -1,82 +1,76 @@
-<div class="c-event-activities">
+<div class="s-grid s-grid--responsive" id="eventfilter">
 
-    <div class="event__filters c-exhibitors__filters s-grid">
-        <div class="event__searchgroup s-grid__column s-grid__column--4-12">
-            <div class="searchgroup">
-                <h3 class="searchgroup__label">Zoek</h3>
-                <span class="searchgroup__holder">
-                        <input type="text"
-                               placeholder="zoeken"
-                               name="search_participants_query"
-                               value=""
-                               class="text">
-                    </span>
-            </div>
-        </div>
-        <div class="event__selectfilter s-grid__column s-grid__column--4-12">
-            <div class="field-group">
-                <h3 class="selectfilter__label">Kies een activiteit</h3>
-                <select name="event__selectfilter_category"
-                        class="custom-select-dropdown hasCustomSelect">
-                    <option value="0">Alle types</option>
-                    {% for category_name, unused in categoryList %}
-                        <option value="{{ category_name|capitalize }}"
-                                data-trigger-group="event-activities"
-                                class="c-event-activities__navitem"
-                                {% if active_activity == category_name %}selected="selected"{% endif %}
-                        >{{ category_name|capitalize }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-        <div class="event__selectfilter s-grid__column s-grid__column--3-12">
-            <div class="field-group">
-                <h3 class="selectfilter__label">Kies een datum</h3>
-                <select name="event__selectfilter_day"
-                        class="custom-select-dropdown hasCustomSelect">
-                    <option value="0" selected="selected">Alle datums</option>
-                    {% for day, day_activities in dayList %}
-                        <option value="{{ day_activities.dateActive }}"
-                                data-trigger-group="event-activities"
-                                class="c-event-activities__navitem"
-                                {% if active_activity == day %}selected="selected"{% endif %}
-                        >{{ day|localDate("j F Y")|capitalize }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
+    <div class="s-grid__column s-grid__column--4-12">
+        <label for="search_participants_query">Zoek</label>
+        <input type="text"
+               placeholder="zoeken"
+               name="search_participants_query"
+               class="text">
     </div>
 
-    <hr>
+    <div class="s-grid__column s-grid__column--4-12">
+        <label for="event__selectfilter_category">Kies een activiteit</label>
+        <select name="event__selectfilter_category">
+            <option value="0">Alle types</option>
+            {% for category_name, unused in categoryList %}
+                <option value="{{ category_name|capitalize }}"
+                        data-trigger-group="event-activities"
+                        {% if active_activity == category_name %}selected="selected"{% endif %}
+                >{{ category_name|capitalize }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <div class="event__holder s-grid">
-        <div class="event_empty_result" style="display: none;">
-            Er zijn geen activiteiten gevonden, probeer het eens met minder <a href="./">zoekcreteria</a>.
-        </div>
-        {% for activity_name, activity in activityList %}
-            <div class="event__block s-grid__column s-grid__column--4-12"
-                 data-category="{{ activity.type }}"
-                 data-day="{{ activity.dateActive }}">
-                <div class="s-square">
-                    <div class="s-square__content">
-                        <div class="c-card">
-                            <img class="c-card__image" src="{{ activity.media.0.url | default(default_image) }}" alt="{{ activity.title }}">
-                            <div class="c-card__title event__title">
-                                <p class="c-article__title h3">{{ activity.title }}</p>
-                                <p>{{ activity.location }}: {{ activity.sublocation }}</p>
-                                <a href="{{ activity.website }}" class="c-button c-button--card">
-                                    BEKIJK DE WEBSITE
-                                </a>
-                                <a href="{{ activity.readmore }}" class="c-button c-button--card">
-                                    BOEK JE TICKET NU
-                                </a>
-                            </div>
-                        </div>
+    <div class="s-grid__column s-grid__column--4-12">
+        <label for="event__selectfilter_day">Kies een datum</label>
+        <select name="event__selectfilter_day">
+            <option value="0" selected="selected">Alle datums</option>
+            {% for day, day_activities in dayList %}
+                <option value="{{ day_activities.dateActive }}"
+                        data-trigger-group="event-activities"
+                        {% if active_activity == day %}selected="selected"{% endif %}
+                >{{ day|localDate("j F Y")|capitalize }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<hr>
+
+<div class="s-grid">
+
+    {% for activity_name, activity in activityList %}
+
+    <div class="event__block s-grid__column s-grid__column--4-12"
+         data-category="{{ activity.type }}"
+         data-day="{{ activity.dateActive }}">
+
+        <div class="s-square">
+            <div class="s-square__content">
+                <div class="c-card">
+                    <a href="{{ activity.website }}">
+                        <div class="c-card__image"
+                             style="background-image: url('{{ activity.media.0.url | default(default_image) }}');"></div>
+                    </a>
+
+                    <div class="c-card__title ">
+                        <small>{{ activity.location }}: {{ activity.sublocation }}</small>
+                        <p class="c-article__title h3">
+                            {{ activity.title }}
+                        </p>
+
+                        <a href="{{ activity.readmore }}" type="button" class="c-button c-button--card">BOEK JE TICKET
+                            NU</a>
                     </div>
                 </div>
             </div>
-
-        {% endfor %}
-
+        </div>
     </div>
+
+    {% endfor %}
+
+</div>
+
+<div id="event_empty_result" class="s-grid s-grid--responsive" style="display: none;">
+    Er zijn geen activiteiten gevonden, probeer het eens met minder <a href="#eventfilter">zoekcriteria</a>.
 </div>
