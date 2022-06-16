@@ -12,9 +12,11 @@ use Timber\Timber;
 class Program {
 
 	/**
-	 * Render template with twig
+	 * Used for generating (shortcode) content with Timber.
+	 *
+	 * @return bool|string categorized program list as html/string or false on failure.
 	 */
-	public function show_category_html() {
+	public function get_category_html(): ?string {
 		$context                           = Timber::context();
 		$context['activityListByTimeslot'] = Activities::getGroupedByTimeslot();
 		$context['active_activity']        = key( $context['activityListByTimeslot'] );
@@ -24,9 +26,11 @@ class Program {
 	}
 
 	/**
-	 * Render template with twig
+	 * Used for generating (shortcode) content with Timber.
+	 *
+	 * @return bool|string program list as html/string or false on failure.
 	 */
-	public function show_html() {
+	public function get_html(): ?string {
 		$context                           = Timber::context();
 		$context['activityListByTimeslot'] = Activities::getGroupedByTimeslot();
 		$context['activityList']           = Activities::getAll(true, true);

@@ -12,9 +12,11 @@ use Timber\Timber;
 class Activity {
 
 	/**
-	 * Render template with twig
+	 * Used for generating (shortcode) content with Timber.
+	 *
+	 * @return bool|string activity list as html/string or false on failure.
 	 */
-	public function show_html() {
+	public function get_html(): ?string {
 		$context                 = Timber::context();
 		$context['activityList'] = Activities::getAll();
 

@@ -13,9 +13,11 @@ use Timber\Timber;
 class Shops {
 
 	/**
-	 * Render template with twig
+	 * Used for generating (shortcode) content with Timber.
+	 *
+	 * @return bool|string shop list as html/string or false on failure.
 	 */
-	public function show_html() {
+	public function get_html(): ?string {
 		$search_shop_query = '';
 		if ( ! empty( $_GET['shop'] ) ) {
 			$search_shop_query = filter_var( $_GET['shop'], FILTER_SANITIZE_STRING );
