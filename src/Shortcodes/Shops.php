@@ -8,15 +8,14 @@ namespace DPG\WordPress\EventApi\Shortcodes;
 
 use DPG\WordPress\EventApi\Api\Exhibitors;
 use DPG\WordPress\EventApi\Models\Exhibitor;
-use Timber;
+use Timber\Timber;
 
 class Shops {
+
 	/**
 	 * Render template with twig
-	 *
-	 * @return void
 	 */
-	public function show_html(): void {
+	public function show_html() {
 		$search_shop_query = '';
 		if ( ! empty( $_GET['shop'] ) ) {
 			$search_shop_query = filter_var( $_GET['shop'], FILTER_SANITIZE_STRING );
@@ -26,7 +25,7 @@ class Shops {
 		$context['search_shop_query'] = $search_shop_query;
 		$context['shops']             = $this->getShops( $search_shop_query );
 
-		Timber::render( 'frontend/shops.twig', $context );
+		return Timber::compile( 'frontend/program.twig', $context );
 	}
 
 	/**
