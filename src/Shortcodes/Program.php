@@ -7,30 +7,30 @@
 namespace DPG\WordPress\EventApi\Shortcodes;
 
 use DPG\WordPress\EventApi\Api\Activities;
-use Timber;
+use Timber\Timber;
 
 class Program {
 
 	/**
-	 * Render template with twig
+	 * Used for generating (shortcode) content with Timber.
 	 *
-	 * @return void
+	 * @return string categorized program list as html/string or empty on failure.
 	 */
-	public function show_category_html(): void {
+	public function get_category_html(): string {
 		$context                           = Timber::context();
 		$context['activityListByTimeslot'] = Activities::getGroupedByTimeslot();
 		$context['active_activity']        = key( $context['activityListByTimeslot'] );
 		$context['default_image']          = DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
-		Timber::render( 'frontend/program_by_category.twig', $context );
+		return Timber::compile( 'frontend/program_by_category.twig', $context ) ?: '';
 	}
 
 	/**
-	 * Render template with twig
+	 * Used for generating (shortcode) content with Timber.
 	 *
-	 * @return void
+	 * @return string program list as html/string or empty on failure.
 	 */
-	public function show_html(): void {
+	public function get_html(): ?string {
 		$context                           = Timber::context();
 		$context['activityListByTimeslot'] = Activities::getGroupedByTimeslot();
 		$context['activityList']           = Activities::getAll(true, true);
@@ -39,6 +39,6 @@ class Program {
 		$context['active_activity']        = key( $context['activityListByTimeslot'] );
 		$context['default_image']          = DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
-		Timber::render( 'frontend/program.twig', $context );
+		return Timber::compile( 'frontend/program.twig', $context ) ?: '';
 	}
 }

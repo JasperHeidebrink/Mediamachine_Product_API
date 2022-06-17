@@ -14,9 +14,9 @@ use DPG\WordPress\EventApi\Shortcodes\Shops;
 
 class Shortcode {
 	public function __construct() {
-		add_shortcode( 'dpg-ep-activities', [ new Activity, 'show_html' ] );
-		add_shortcode( 'dpg-ep-shops', [ new Shops, 'show_html' ] );
-		add_shortcode( 'dpg-ep-program-category', [ new Program, 'show_category_html' ] );
-		add_shortcode( 'dpg-ep-program', [ new Program, 'show_html' ] );
+		add_shortcode( 'dpg-ep-activities', [ new Activity, 'get_html' ] );
+		add_shortcode( 'dpg-ep-shops', [ new Shops, 'get_html' ] );
+		add_shortcode( 'dpg-ep-program-category', [ new Program, 'get_category_html' ] );
+		add_shortcode( 'dpg-ep-program', [ new Program, 'get_html' ] );
 	}
 }
