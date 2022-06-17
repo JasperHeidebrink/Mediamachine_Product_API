@@ -38,7 +38,7 @@ if (! defined('WPINC')) {
 define('DPG_EVENTAPI_PATH', trailingslashit(plugin_dir_path(__FILE__)));
 define('DPG_EVENTAPI_URL', trailingslashit(plugin_dir_url(__FILE__)));
 define('DPG_EVENTAPI_SLUG', 'dpg-wp-event-api');
-define('DPG_EVENTAPI_VERSION', '1.1.3');
+define('DPG_EVENTAPI_VERSION', '1.1.6');
 
 new Frontend();
 new Shortcode();
