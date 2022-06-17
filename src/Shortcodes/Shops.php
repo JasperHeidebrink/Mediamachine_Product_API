@@ -27,7 +27,7 @@ class Shops {
 		$context['search_shop_query'] = $search_shop_query;
 		$context['shops']             = $this->getShops( $search_shop_query );
 
-		return Timber::compile( 'frontend/program.twig', $context );
+		return Timber::compile( 'frontend/shops.twig', $context );
 	}
 
 	/**
