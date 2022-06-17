@@ -7,18 +7,19 @@
 namespace DPG\WordPress\EventApi\Shortcodes;
 
 use DPG\WordPress\EventApi\Api\Activities;
-use Timber;
+use Timber\Timber;
 
 class Activity {
+
 	/**
-	 * Render template with twig
+	 * Used for generating (shortcode) content with Timber.
 	 *
-	 * @return void
+	 * @return string activity list as html/string or empty on failure.
 	 */
-	public function show_html(): void {
+	public function get_html(): string {
 		$context                 = Timber::context();
 		$context['activityList'] = Activities::getAll();
 
-		Timber::render( 'frontend/activities.twig', $context );
+		return Timber::compile( 'frontend/activities.twig', $context ) ?: '';
 	}
 }
