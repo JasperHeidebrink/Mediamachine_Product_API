@@ -14,12 +14,12 @@ class Activity {
 	/**
 	 * Used for generating (shortcode) content with Timber.
 	 *
-	 * @return bool|string activity list as html/string or false on failure.
+	 * @return string activity list as html/string or empty on failure.
 	 */
-	public function get_html(): ?string {
+	public function get_html(): string {
 		$context                 = Timber::context();
 		$context['activityList'] = Activities::getAll();
 
-		return Timber::compile( 'frontend/activities.twig', $context );
+		return Timber::compile( 'frontend/activities.twig', $context ) ?: '';
 	}
 }

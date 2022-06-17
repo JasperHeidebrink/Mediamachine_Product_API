@@ -15,9 +15,9 @@ class Shops {
 	/**
 	 * Used for generating (shortcode) content with Timber.
 	 *
-	 * @return bool|string shop list as html/string or false on failure.
+	 * @return string shop list as html/string or empty on failure.
 	 */
-	public function get_html(): ?string {
+	public function get_html(): string {
 		$search_shop_query = '';
 		if ( ! empty( $_GET['shop'] ) ) {
 			$search_shop_query = filter_var( $_GET['shop'], FILTER_SANITIZE_STRING );
@@ -27,7 +27,7 @@ class Shops {
 		$context['search_shop_query'] = $search_shop_query;
 		$context['shops']             = $this->getShops( $search_shop_query );
 
-		return Timber::compile( 'frontend/shops.twig', $context );
+		return Timber::compile( 'frontend/shops.twig', $context ) ?: '';
 	}
 
 	/**

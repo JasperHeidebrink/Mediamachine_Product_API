@@ -14,21 +14,21 @@ class Program {
 	/**
 	 * Used for generating (shortcode) content with Timber.
 	 *
-	 * @return bool|string categorized program list as html/string or false on failure.
+	 * @return string categorized program list as html/string or empty on failure.
 	 */
-	public function get_category_html(): ?string {
+	public function get_category_html(): string {
 		$context                           = Timber::context();
 		$context['activityListByTimeslot'] = Activities::getGroupedByTimeslot();
 		$context['active_activity']        = key( $context['activityListByTimeslot'] );
 		$context['default_image']          = DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
-		return Timber::compile( 'frontend/program_by_category.twig', $context );
+		return Timber::compile( 'frontend/program_by_category.twig', $context ) ?: '';
 	}
 
 	/**
 	 * Used for generating (shortcode) content with Timber.
 	 *
-	 * @return bool|string program list as html/string or false on failure.
+	 * @return string program list as html/string or empty on failure.
 	 */
 	public function get_html(): ?string {
 		$context                           = Timber::context();
@@ -39,6 +39,6 @@ class Program {
 		$context['active_activity']        = key( $context['activityListByTimeslot'] );
 		$context['default_image']          = DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
-		return Timber::compile( 'frontend/program.twig', $context );
+		return Timber::compile( 'frontend/program.twig', $context ) ?: '';
 	}
 }
