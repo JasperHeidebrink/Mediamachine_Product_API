@@ -9,7 +9,7 @@
  * @author    DPG Media Magazines <wordpress_beheer.nl@dpgmediamagazines.nl>
  * @copyright 2022 DPG Media Magazines
  * @license   https://www.dpgmediamagazines.nl Closed
- * @version   GIT: 1.1.7
+ * @version   GIT:1.1.7
  * @link      https://www.dpgmediamagazines.nl
  * @since     1.0.0
  *
