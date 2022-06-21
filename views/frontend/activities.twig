@@ -1,11 +1,8 @@
-<div class="c-exhibitors__categories">
-    <option value="">Aktiviteiten</option>
+<div class="c-event-activities">
+    <h2>Activiteiten</h2>
     {% for activity in activityList %}
-
-        <?php foreach ($activityList as $activity) : ?>
         <p>
-            <b>{{ activity.getTitle }}</b>
-            {{ activity.getDateActive }}<br>
+            <b>{{ activity.getTitle }}</b> {{ activity.getDateActive|localDate("j F Y") }}
         </p>
     {% endfor %}
 </div>
