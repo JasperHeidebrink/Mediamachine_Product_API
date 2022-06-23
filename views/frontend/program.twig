@@ -1,20 +1,18 @@
 <div class="s-grid s-grid--responsive c-event-filter" id="eventfilter">
 
     <div class="s-grid__column s-grid__column--4-12">
-        <label for="search_participants_query">Zoek</label>
+        <label for="event_filter_text">Zoek</label>
         <input type="text"
                placeholder="zoeken"
-               name="search_participants_query"
-               class="text">
+               name="event_filter_text">
     </div>
 
     <div class="s-grid__column s-grid__column--4-12">
-        <label for="event__selectfilter_category">Kies een activiteit</label>
-        <select name="event__selectfilter_category">
+        <label for="event_filter_activity">Kies een activiteit</label>
+        <select name="event_filter_activity">
             <option value="0">Alle types</option>
             {% for category_name, unused in categoryList %}
                 <option value="{{ category_name|capitalize }}"
-                        data-trigger-group="event-activities"
                         {% if active_activity == category_name %}selected="selected"{% endif %}
                 >{{ category_name|capitalize }}</option>
             {% endfor %}
@@ -22,12 +20,11 @@
     </div>
 
     <div class="s-grid__column s-grid__column--4-12">
-        <label for="event__selectfilter_day">Kies een datum</label>
-        <select name="event__selectfilter_day">
+        <label for="event_filter_date">Kies een datum</label>
+        <select name="event_filter_date">
             <option value="0" selected="selected">Alle datums</option>
             {% for day, day_activities in dayList %}
                 <option value="{{ day_activities.dateActive }}"
-                        data-trigger-group="event-activities"
                         {% if active_activity == day %}selected="selected"{% endif %}
                 >{{ day|localDate("j F Y")|capitalize }}</option>
             {% endfor %}
@@ -71,6 +68,6 @@
 
 </div>
 
-<div id="event_empty_result" class="s-grid s-grid--responsive" style="display: none;">
-    Er zijn geen activiteiten gevonden, probeer het eens met minder <a href="#eventfilter">zoekcriteria</a>.
+<div class="s-grid s-grid--responsive c-event-no-result">
+    Er zijn geen activiteiten gevonden, probeer het eens met minder zoekcriteria.
 </div>
