@@ -22,7 +22,9 @@ jQuery(document).ready(function ($) {
         empty_result.hide();
 
         $('.event__block').each(function () {
-            let item = $(this);
+            let item = $(this),
+                item_text = $('.c-card', item).text();
+
             if ('0' === day && '0' === category) {
                 item.show(EVENTAPI_SHOW_SPEED);
             } else if ('0' !== day && '0' !== category &&
@@ -41,8 +43,8 @@ jQuery(document).ready(function ($) {
                 return;
             }
 
-            if ($('.event__title:contains(' + text + ')', item).length === 0) {
-                item.show(EVENTAPI_SHOW_SPEED);
+            if (item_text.toLowerCase().search(text.toLowerCase()) === -1) {
+                item.hide();
             }
         });
 

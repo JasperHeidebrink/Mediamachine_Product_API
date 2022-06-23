@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.1.8
+Text search in complete card element
+
 ### 1.1.7
 Small UI improvements
 
