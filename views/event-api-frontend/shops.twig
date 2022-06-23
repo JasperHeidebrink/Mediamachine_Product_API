@@ -15,7 +15,7 @@
             {# set custom ro default link to page or external site #}
             <div class="s-columns s-columns--3" data-js-sort>
                 {% for branch in branches %}
-                    {% for exhibitor in branch %}
+                    {% for exhibitor in branch|sort((a, b) => a.stand.name <=> b.stand.name)%}
                         {% set displayName = exhibitor.stand is defined and exhibitor.stand.name != '' ?  exhibitor.stand.name : exhititor.exhibitor.getTitle %}
 
                         <div class="s-columns__column c-shoppen" data-sort="{{ exhibitor.stand.name }}">
