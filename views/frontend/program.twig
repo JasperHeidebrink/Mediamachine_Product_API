@@ -38,31 +38,32 @@
 
     {% for activity_name, activity in activityList %}
 
-    <div class="event__block s-grid__column s-grid__column--4-12"
-         data-category="{{ activity.type }}"
-         data-day="{{ activity.dateActive }}">
+        <div class="event__block s-grid__column s-grid__column--4-12"
+             data-category="{{ activity.type }}"
+             data-day="{{ activity.dateActive }}">
 
-        <div class="s-square">
-            <div class="s-square__content">
-                <div class="c-card">
-                    <a href="{{ activity.website }}">
-                        <div class="c-card__image"
-                             style="background-image: url('{{ activity.media.0.url | default(default_image) }}');"></div>
-                    </a>
+            <div class="s-square">
+                <div class="s-square__content">
+                    <div class="c-card">
+                        <a href="{{ activity.website }}">
+                            <div class="c-card__image"
+                                 style="background-image: url('{{ activity.media.0.url | default(default_image) }}');"></div>
+                        </a>
 
-                    <div class="c-card__title ">
-                        <small>{{ activity.location }}: {{ activity.sublocation }}</small>
-                        <p class="c-article__title h3">
-                            {{ activity.title }}
-                        </p>
+                        <div class="c-card__title ">
+                            <small>{{ activity.location }}: {{ activity.sublocation }}</small>
+                            <p class="c-article__title h3">
+                                {{ activity.title }}
+                            </p>
 
-                        <a href="{{ activity.readmore }}" type="button" class="c-button c-button--card">BOEK JE TICKET
-                            NU</a>
+                            <a href="{{ activity.readmore }}" type="button" class="c-button c-button--card">BOEK JE
+                                TICKET
+                                NU</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
     {% endfor %}
 
