@@ -27,6 +27,8 @@ class Shops {
 		$context['search_shop_query'] = $search_shop_query;
 		$context['shops']             = $this->getShops( $search_shop_query );
 
+		wp_enqueue_script('dpg-event-shops' );
+
 		return Timber::compile( 'event-api-frontend/shops.twig', $context ) ?: '';
 	}
 

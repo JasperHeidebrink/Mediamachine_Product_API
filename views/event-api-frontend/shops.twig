@@ -1,46 +1,27 @@
 <div class="c-event-shopping">
 
-    <div class="shopping__header">
-        <form method="get" action="" class="search search--shopping">
-            <input type="text" name="shop" value="{{ search_shop_query }}"
-                   placeholder="{{ shop_search_placeholder | default( 'Zoek een shop...' ) }}"/>
-            <input type="submit" value="{{ shop_search_btn | default( 'Zoeken' ) }}">
-        </form>
+    <div class="c-event-shop-header">
+        <input type="text" name="event_shop_search" placeholder="Zoek een shop..."/>
     </div>
 
     {% if shops and shops is iterable %}
         {% for categoryTitle, branches in shops %}
-            <h2 class="shop__category-title">Categorie {{ categoryTitle|lower }}</h2>
-
-            {# set custom ro default link to page or external site #}
-            <div class="s-columns s-columns--3" data-js-sort>
-                {% for branch in branches %}
-                    {% for exhibitor in branch|sort((a, b) => a.stand.name <=> b.stand.name)%}
-                        {% set displayName = exhibitor.stand is defined and exhibitor.stand.name != '' ?  exhibitor.stand.name : exhititor.exhibitor.getTitle %}
-
-                        <div class="s-columns__column c-shoppen" data-sort="{{ exhibitor.stand.name }}">
-                            <span class="c-shoppen__displayname">
-                                <strong>
-                                    {% if exhibitor.stand is defined and exhibitor.stand.website is defined and exhibitor.stand.website is not empty %}
-                                        <a href="{{ exhibitor.stand.website }}"
-                                           title="{{ displayName }}" target="_blank">
-                                            <span>{{ displayName }}</span>
-                                        </a>
-                                    {% else %}
-                                        <span>{{ displayName }}</span>
-                                    {% endif %}
-                                </strong>
-                            </span>
-
-                            <span class="c-shoppen__location">
-                                {{ exhibitor.getStand().location|default() }}
-                                {% if exhibitor.getStand().location is not empty %} - {% endif %}
-                                {{ exhibitor.getStand().sublocation|default() }}
-                            </span>
-                        </div>
+            <div class="c-shop-category">
+                <h2>Categorie {{ categoryTitle|lower }}</h2>
+                <div class="s-columns s-columns--3">
+                    {% for branch in branches %}
+                        {% for exhibitor in branch|sort((a, b) => a.stand.name <=> b.stand.name) %}
+                            {% include 'event-api-frontend/shops/shop.twig' with {
+                                'exhibitor': exhibitor
+                            } %}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
+                </div>
             </div>
         {% endfor %}
     {% endif %}
+</div>
+
+<div class="s-grid s-grid--responsive c-event-no-result">
+    Er zijn geen shops gevonden, probeer het eens met een andere zoekopdracht.
 </div>

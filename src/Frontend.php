@@ -27,5 +27,13 @@ class Frontend {
 			DPG_EVENTAPI_VERSION
 		);
 
+		wp_register_script(
+			'dpg-event-shops',
+			DPG_EVENTAPI_URL . 'assets/shops.js',
+			[ 'jquery' ],
+			DPG_EVENTAPI_VERSION
+		);
+
+
 	}
 }
