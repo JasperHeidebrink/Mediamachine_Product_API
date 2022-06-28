@@ -20,6 +20,6 @@ class Activity {
 		$context                 = Timber::context();
 		$context['activityList'] = Activities::getAll();
 
-		return Timber::compile( 'frontend/activities.twig', $context ) ?: '';
+		return Timber::compile( 'event-api-frontend/activities.twig', $context ) ?: '';
 	}
 }

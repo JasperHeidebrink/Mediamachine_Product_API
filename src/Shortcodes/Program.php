@@ -22,7 +22,9 @@ class Program {
 		$context['active_activity']        = key( $context['activityListByTimeslot'] );
 		$context['default_image']          = DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
-		return Timber::compile( 'frontend/program_by_category.twig', $context ) ?: '';
+		wp_enqueue_script('dpg-event-category-filter' );
+
+		return Timber::compile( 'event-api-frontend/program_by_category.twig', $context ) ?: '';
 	}
 
 	/**
@@ -39,6 +41,8 @@ class Program {
 		$context['active_activity']        = key( $context['activityListByTimeslot'] );
 		$context['default_image']          = DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
-		return Timber::compile( 'frontend/program.twig', $context ) ?: '';
+		wp_enqueue_script('dpg-event-filter' );
+
+		return Timber::compile( 'event-api-frontend/program.twig', $context ) ?: '';
 	}
 }
