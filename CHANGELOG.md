@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.2.0
+- Fix event filters
+- Adjust Views to maka it cleaner
+- Adjust Views path to make it easier to override in theme
+- Remove CSS from plugin
+- Optimize JS scripts
+
 ### 1.1.8
 Text search in complete card element
 
