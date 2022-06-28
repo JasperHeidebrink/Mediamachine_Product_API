@@ -1,0 +1,7 @@
+<div class="c-event-activities">
+    <ul>
+        {% for activity in activityList %}
+            <li><b>{{ activity.getTitle }}</b> - {{ activity.getDateActive|localDate("j F Y") }}</li>
+        {% endfor %}
+    </ul>
+</div>

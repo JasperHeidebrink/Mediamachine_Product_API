@@ -1,0 +1,27 @@
+<div class="c-event-shopping">
+
+    <div class="c-event-shop-header">
+        <input type="text" name="event_shop_search" placeholder="Zoek een shop..."/>
+    </div>
+
+    {% if shops and shops is iterable %}
+        {% for categoryTitle, branches in shops %}
+            <div class="c-shop-category">
+                <h2>Categorie {{ categoryTitle|lower }}</h2>
+                <div class="s-columns s-columns--3">
+                    {% for branch in branches %}
+                        {% for exhibitor in branch|sort((a, b) => a.stand.name <=> b.stand.name) %}
+                            {% include 'event-api-frontend/shops/shop.twig' with {
+                                'exhibitor': exhibitor
+                            } %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="s-grid s-grid--responsive c-event-no-result">
+    Er zijn geen shops gevonden, probeer het eens met een andere zoekopdracht.
+</div>

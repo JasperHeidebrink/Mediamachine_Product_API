@@ -1,0 +1,35 @@
+{% set day_activity_hash = day_activity.activityId ~ day_activity.timestampStart %}
+
+<div class="activity">
+    <a href="#" data-target="{{ day_activity_hash|md5 }}">
+        <span>{{ day_activity.title }}</span>
+        <date>{{ day_activity.start }} - {{ day_activity.end }}</date>
+    </a>
+
+    <div data-item="{{ day_activity_hash|md5 }}">
+        <div class="image">
+            <img src="{{ day_activity.image | default(default_image) }}"
+                 alt="{{ day_activity.title }}">
+        </div>
+
+        <div class="content">
+            <h3>
+                {{ day_activity.title }}
+            </h3>
+            <p class="date">
+                {{ day|localDate("l j F Y")|capitalize }}: {{ day_activity.start }} - {{ day_activity.end }}
+            </p>
+            <p>
+                <b>{{ day_activity.location }}: {{ day_activity.sublocation }}</b><br>
+                {{ day_activity.description }}
+            </p>
+            {% if day_activity.readmore %}
+                <p>
+                    <a href="{{ day_activity.readmore }}"
+                            {% if day_activity.externalLink %} target="_blank"{% endif %}>
+                        Lees meer</a>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
