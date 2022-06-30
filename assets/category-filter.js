@@ -21,7 +21,7 @@ jQuery(document).ready(function ($) {
         $(this).toggleClass('open');
     });
 
-    $(".c-event-category .day .activities .activity a").on('click', function (e){
+    $(".c-event-category .day .activities .activity>a").on('click', function (e){
         e.preventDefault();
         $(this).siblings().toggleClass('open');
     });
