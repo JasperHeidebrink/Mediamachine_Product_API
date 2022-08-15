@@ -1,31 +1,29 @@
 <div class="s-grid s-grid--responsive c-event-filter">
 
-    <div class="s-grid__column s-grid__column--4-12">
-        <label for="event_filter_text">Zoek</label>
+    <div class="s-grid__column s-grid__column--6-12">
+        <label for="event_shop_search">Zoek</label>
         <input type="text"
                placeholder="zoeken"
-               name="shop_filter_text">
+               name="event_shop_search">
     </div>
 
-    <div class="s-grid__column s-grid__column--4-12">
-        <label for="event_filter_activity">Categorie</label>
-        <select name="event_filter_activity">
-            <option value="0">Alle</option>
+    <div class="s-grid__column s-grid__column--6-12">
+        <label for="event_shop_category">Categorie</label>
+        <select name="event_shop_category">
+            <option value="#">Alle</option>
             {% for category in categories %}
-                <option value="{{ category }}"
-                        {% if active_activity == category_name %}selected="selected"{% endif %}
-                >{{ category|capitalize }}</option>
+                <option value="{{ category|lower }}">{{ category|capitalize }}</option>
             {% endfor %}
         </select>
     </div>
 
 </div>
 
-<div class="s-grid c-event-activities">
-    {% if shops and shops is iterable %}
+<div class="s-grid c-event-shops-extended">
+    {% if shops is iterable %}
         {% for shop in shops %}
-            <div class="event__block s-grid__column s-grid__column--4-12"
-                 data-category="{{ shop.branches|join(' ') }}">
+            <div class="event__block s-grid__column s-grid__column--4-12 c-event-shop"
+                 data-categories="{{ shop.branches|join(' ')|lower }}">
 
                 <div class="s-square">
                     <div class="s-square__content">
@@ -49,5 +47,8 @@
             </div>
         {% endfor %}
     {% endif %}
+</div>
 
+<div class="s-grid s-grid--responsive c-event-no-result">
+    Er zijn geen shops gevonden, probeer het eens met een andere zoekopdracht.
 </div>

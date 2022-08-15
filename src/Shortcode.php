@@ -4,6 +4,7 @@ namespace DPG\WordPress\EventApi;
 
 use DPG\WordPress\EventApi\Api\Activities;
 use DPG\WordPress\EventApi\Api\Exhibitors;
+use DPG\WordPress\EventApi\Api\Shops;
 use Timber\Timber;
 
 class Shortcode {
@@ -72,9 +73,10 @@ class Shortcode {
 	 */
 	public function get_shops_content(): string {
 
-		$context                      = Timber::context();
-		$context['search_shop_query'] = $_GET['shop'] ? filter_var( $_GET['shop'], FILTER_SANITIZE_STRING ) : '';
-		$context['shops']             = ( new Exhibitors )->getShops( $context['search_shop_query'] );
+		$context                  = Timber::context();
+		$shops                    = new Shops();
+		$context['branches']      = $shops->get_shops_categorised();
+		$context['default_image'] = get_option( 'event_api_default_image') ?? DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
 		wp_enqueue_script( 'dpg-event-shops' );
 
@@ -88,11 +90,11 @@ class Shortcode {
 	 */
 	public function get_shops_extended_content() {
 
-		$context                      = Timber::context();
-		$shops                        = ( new Exhibitors )->getShops(false );
-		$context['shops']             = $shops['exhibitors'];
-		$context['categories']        = $shops['categories'];
-		$context['default_image']     = DPG_EVENTAPI_URL . '/assets/placeholder.png';
+		$context                  = Timber::context();
+		$shops                    = new Shops();
+		$context['shops']         = $shops->get_shops_at_random();
+		$context['categories']    = $shops->get_categories();
+		$context['default_image'] = get_option( 'event_api_default_image') ?? DPG_EVENTAPI_URL . '/assets/placeholder.png';
 
 		wp_enqueue_script( 'dpg-event-shops' );
 

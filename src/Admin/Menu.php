@@ -10,7 +10,7 @@ namespace DPG\WordPress\EventApi\Admin;
 use Timber;
 
 class Menu {
-	protected $parent_plugin_name = 'sm-main';
+	protected string $parent_plugin_name = 'sm-main';
 
 	public function __construct() {
 		if ( ! is_admin() ) {

@@ -13,6 +13,9 @@
             <code>[dpg-ep-shops]</code> ( display all the shops, including a search option, organised by category )<br>
         </p>
         <p>
+            <code>[dpg-ep-shops-extended]</code> ( display all the shops at random order with image )<br>
+        </p>
+        <p>
             <code>[dpg-ep-program-category]</code> ( display a list with the program grouped by category )<br>
         </p>
         <p>
@@ -24,19 +27,6 @@
         <form method="post" action="options.php">
             {{ eventapi_settings_form('eventapi_settings_admin') }}
         </form>
-    </div>
-
-    <div class="card" style="min-width:50%;">
-        <h2>Event data:</h2>
-        Display an example list of some event items.<br>
-        <button id="activities" class="ajaxload ajaxload_activities button button-primary">
-            {{ __('Show Activities', DPG_EVENTAPI_SLUG) }}
-        </button>
-        <button id="exhibitors" class="ajaxload ajaxload_exhibitors button button-primary">
-            {{ __('Show Exhibitors', DPG_EVENTAPI_SLUG) }}
-        </button>
-        <hr>
-        <div class="ajaxdata"></div>
     </div>
 
     <div class="card" style="min-width:50%;">

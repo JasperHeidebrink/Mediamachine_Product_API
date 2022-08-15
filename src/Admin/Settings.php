@@ -18,6 +18,10 @@ class Settings {
 			'eventapi_settings_admin',
 			'eventapi_edition_id'
 		);
+		register_setting(
+			'eventapi_settings_admin',
+			'event_api_default_image'
+		);
 
 		add_settings_section(
 			'eventapi_settings',
@@ -37,6 +41,13 @@ class Settings {
 			'eventapi_edition_id',
 			__( 'Select your edition', DPG_EVENTAPI_SLUG ),
 			[ $this, 'dropdown_editions' ],
+			'eventapi_settings_admin',
+			'eventapi_settings'
+		);
+		add_settings_field(
+			'event_api_default_image',
+			__( 'Select the default image', DPG_EVENTAPI_SLUG ),
+			[ $this, 'media_field' ],
 			'eventapi_settings_admin',
 			'eventapi_settings'
 		);
@@ -134,5 +145,12 @@ class Settings {
 			echo '<option value="' . $edition->getId() . '" ' . $selected . '>' . $edition->getTitle() . '</option>';
 		}
 		echo '</select>';
+	}
+
+	public function media_field(): void {
+		$current_media = (string) get_option( 'event_api_default_image');
+
+		echo '<input id="event_api_default_image" type="text" name="event_api_default_image" value="'.$current_media.'" />';
+		echo '<input id="event_api_default_image_button" class="button" type="button" value="Upload Image" />';
 	}
 }
