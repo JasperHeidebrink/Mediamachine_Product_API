@@ -4,17 +4,15 @@
         <input type="text" name="event_shop_search" placeholder="Zoek een shop..."/>
     </div>
 
-    {% if shops and shops is iterable %}
-        {% for categoryTitle, branches in shops %}
+    {% if branches is iterable %}
+        {% for categoryTitle, shops in branches %}
             <div class="c-shop-category">
                 <h2>Categorie {{ categoryTitle|lower }}</h2>
                 <div class="s-columns s-columns--3">
-                    {% for branch in branches %}
-                        {% for exhibitor in branch|sort((a, b) => a.stand.name <=> b.stand.name) %}
-                            {% include 'event-api-frontend/shops/shop.twig' with {
-                                'exhibitor': exhibitor
-                            } %}
-                        {% endfor %}
+                    {% for shop in shops|sort((a, b) => a.stand.name <=> b.stand.name) %}
+                        {% include 'event-api-frontend/shops/shop.twig' with {
+                            'shop': shop
+                        } %}
                     {% endfor %}
                 </div>
             </div>

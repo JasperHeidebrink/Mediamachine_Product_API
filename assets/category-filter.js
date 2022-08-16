@@ -3,8 +3,6 @@
  * @package   DPG_WP_EventApi
  */
 jQuery(document).ready(function ($) {
-
-
     showCategories();
 
     $(".c-event-activities-category nav a").on('click', function (e){

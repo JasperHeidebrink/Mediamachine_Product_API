@@ -1,19 +1,19 @@
-{% set displayName = exhibitor.stand is defined and exhibitor.stand.name != '' ?  exhibitor.stand.name : exhititor.exhibitor.getTitle %}
+{% set displayName = shop.stand is defined and shop.stand.name != '' ?  shop.stand.name : shop.exhibitor.getTitle %}
 
 <div class="s-columns__column c-event-shop">
 
-    {% if exhibitor.stand is defined and exhibitor.stand.website is defined and exhibitor.stand.website is not empty %}
-    <a href="{{ exhibitor.stand.website }}" title="{{ displayName }}" target="_blank">
+    {% if shop.stand is defined and shop.stand.website is defined and shop.stand.website is not empty %}
+    <a href="{{ shop.stand.website }}" title="{{ displayName }}" target="_blank">
         {% endif %}
         <div class="name">
             {{ displayName }}
         </div>
         <div class="location">
-            {{ exhibitor.getStand().location|default() }}
-            {% if exhibitor.getStand().location is not empty %} - {% endif %}
-            {{ exhibitor.getStand().sublocation|default() }}
+            {{ shop.getStand().location|default() }}
+            {% if shop.getStand().location is not empty %} - {% endif %}
+            {{ shop.getStand().sublocation|default() }}
         </div>
-        {% if exhibitor.stand is defined and exhibitor.stand.website is defined and exhibitor.stand.website is not empty %}
+        {% if shop.stand is defined and shop.stand.website is defined and shop.stand.website is not empty %}
     </a>
     {% endif %}
 </div>

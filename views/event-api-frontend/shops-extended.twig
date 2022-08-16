@@ -1,0 +1,54 @@
+<div class="s-grid s-grid--responsive c-event-filter">
+
+    <div class="s-grid__column s-grid__column--6-12">
+        <label for="event_shop_search">Zoek</label>
+        <input type="text"
+               placeholder="zoeken"
+               name="event_shop_search">
+    </div>
+
+    <div class="s-grid__column s-grid__column--6-12">
+        <label for="event_shop_category">Categorie</label>
+        <select name="event_shop_category">
+            <option value="#">Alle</option>
+            {% for category in categories %}
+                <option value="{{ category|lower }}">{{ category|capitalize }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+</div>
+
+<div class="s-grid c-event-shops-extended">
+    {% if shops is iterable %}
+        {% for shop in shops %}
+            <div class="event__block s-grid__column s-grid__column--4-12 c-event-shop"
+                 data-categories="{{ shop.branches|join(' ')|lower }}">
+
+                <div class="s-square">
+                    <div class="s-square__content">
+                        <div class="c-card">
+                            <a href="{{ shop.url }}">
+                                <div class="c-card__image"
+                                     style="background-image: url('{{ shop.image | default(default_image) }}');"></div>
+                            </a>
+
+                            <div class="c-card__title ">
+                                <small>Locatie: {{ shop.stand.sublocation }}</small>
+                                <p class="c-article__title h3">
+                                    {{ shop.title }}
+                                </p>
+
+                                <a href="{{ shop.url }}" type="button" class="c-button c-button--card" target="_blank">Website</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="s-grid s-grid--responsive c-event-no-result">
+    Er zijn geen shops gevonden, probeer het eens met een andere zoekopdracht.
+</div>
