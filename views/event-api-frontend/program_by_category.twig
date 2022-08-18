@@ -13,7 +13,8 @@
             {% for day, day_activities in days_activities %}
                 {% include 'event-api-frontend/program/category/day.twig' with {
                     'day': day,
-                    'category_name': category_name
+                    'category_name': category_name,
+                    'settings' : settings
                 } %}
             {% endfor %}
         </div>

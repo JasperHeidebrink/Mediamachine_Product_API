@@ -3,7 +3,7 @@
 <div class="s-columns__column c-event-shop">
 
     {% if shop.stand is defined and shop.stand.website is defined and shop.stand.website is not empty %}
-    <a href="{{ shop.stand.website }}" title="{{ displayName }}" target="_blank">
+    <a href="{{ shop.stand.website }}" title="{{ displayName }}" target="{{ settings.link_target }}">
         {% endif %}
         <div class="name">
             {{ displayName }}

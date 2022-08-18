@@ -1,4 +1,5 @@
 {% set day_activity_hash = day_activity.activityId ~ day_activity.timestampStart %}
+{% set link = settings.button_link == 'readmore' ? day_activity.readmore : day_activity.website %}
 
 <div class="activity">
     <a href="#" data-target="{{ day_activity_hash|md5 }}">
@@ -20,14 +21,22 @@
                 {{ day|localDate("l j F Y")|capitalize }}: {{ day_activity.start }} - {{ day_activity.end }}
             </p>
             <p>
-                <b>{{ day_activity.location }}: {{ day_activity.sublocation }}</b><br>
+                {% if 'true' != settings.hide_location %}
+                    <b>{{ day_activity.location }}: {{ day_activity.sublocation }}</b><br>
+                {% endif %}
+                {% if 'true' == settings.show_price %}
+                    {% if day_activity.price matches '/^\\d+$/' and day_activity.price > 0 %}
+                        Prijs: € {{ day_activity.price|number_format(2) }}<br>
+                    {% else %}
+                        {{ settings.free_text }}<br>
+                    {% endif %}
+                {% endif %}
+
                 {{ day_activity.description }}
             </p>
             {% if day_activity.readmore %}
                 <p>
-                    <a href="{{ day_activity.readmore }}"
-                            {% if day_activity.externalLink %} target="_blank"{% endif %}>
-                        Lees meer</a>
+                    <a href="{{ link }}" target="{{ settings.link_target }}">{{ settings.button_text }}</a>
                 </p>
             {% endif %}
         </div>

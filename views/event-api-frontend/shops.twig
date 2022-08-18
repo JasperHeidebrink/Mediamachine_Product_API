@@ -11,7 +11,8 @@
                 <div class="s-columns s-columns--3">
                     {% for shop in shops|sort((a, b) => a.stand.name <=> b.stand.name) %}
                         {% include 'event-api-frontend/shops/shop.twig' with {
-                            'shop': shop
+                            'shop': shop,
+                            'settings': settings
                         } %}
                     {% endfor %}
                 </div>

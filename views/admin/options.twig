@@ -2,37 +2,218 @@
 
     <h2>{{ title }}</h2>
 
-    <div class="card" style="min-width:100%;">
-        <h2>Usage:</h2>
-        Use one of these shortcodes to display a specific part of the Events.<br>
-        Copy the complete shortcode and place the code inside the content field of a specific page.<br>
-        <p>
-            <code>[dpg-ep-activities]</code> ( display a list with all the activities, no format )<br>
-        </p>
-        <p>
-            <code>[dpg-ep-shops]</code> ( display all the shops, including a search option, organised by category )<br>
-        </p>
-        <p>
-            <code>[dpg-ep-shops-extended]</code> ( display all the shops at random order with image )<br>
-        </p>
-        <p>
-            <code>[dpg-ep-program-category]</code> ( display a list with the program grouped by category )<br>
-        </p>
-        <p>
-            <code>[dpg-ep-program]</code> ( display a list with the program )<br>
-        </p>
-    </div>
 
-    <div class="card" style="min-width:50%;">
+    <div class="card" style="min-width:100%;">
         <form method="post" action="options.php">
             {{ eventapi_settings_form('eventapi_settings_admin') }}
         </form>
     </div>
 
-    <div class="card" style="min-width:50%;">
+    <div class="card" style="min-width:100%;">
         <form method="post" action="options.php">
             {{ eventapi_settings_form('eventapi_clear_cache_admin', 'Reload Event Data') }}
         </form>
+    </div>
+
+    <div class="card" style="min-width:100%;">
+        <h2>Usage:</h2>
+        Use one of the shortcodes below to display a specific part of the Events.<br>
+        Copy the complete shortcode and place the code inside the content field of a specific page.<br>
+        To adjust settings add them to the shortcode as displayed in the example.
+    </div>
+
+    <div class="card" style="min-width:100%;">
+        <h2>Show activities</h2>
+        <p><code>[dpg-ep-activities]</code></p>
+        <p>Display a list with all the activities.</p>
+        <p><b>Options:</b> none</p>
+    </div>
+
+    <div class="card" style="min-width:100%;">
+        <h2>Show shops</h2>
+        <p><code>[dpg-ep-shops]</code></p>
+        <p>Display all the shops, including a search option, organised by category.</p>
+        <p><b>Options:</b></p>
+        <table class="wp-list-table widefat fixed striped table-view-list">
+            <thead>
+            <tr>
+                <th>Option</th>
+                <th>What does it do</th>
+                <th>Default value</th>
+                <th>Valid values</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>link_target</td>
+                <td>Determines how the links are opened.</td>
+                <td>_blank</td>
+                <td>
+                    _blank (opens in new tab)<br>
+                    _self (opens in same tab)
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p>
+            Example: <code>[dpg-ep-shops link_target="_self"]</code>
+        </p>
+    </div>
+
+    <div class="card" style="min-width:100%;">
+        <h2>Show shops extended version</h2>
+        <p><code>[dpg-ep-shops-extended]</code></p>
+        <p>Display all the shops at random order with image. With search and category filter</p>
+        <p><b>Options:</b></p>
+        <table class="wp-list-table widefat fixed striped table-view-list">
+            <thead>
+            <tr>
+                <th>Option</th>
+                <th>What does it do</th>
+                <th>Default value</th>
+                <th>Valid values</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>link_target</td>
+                <td>Determines how the links are opened.</td>
+                <td>_blank</td>
+                <td>_blank (opens in new tab)/_self (opens in current tab)</td>
+            </tr>
+            <tr>
+                <td>button_text</td>
+                <td>Determines what the text in the buttons is going to be.</td>
+                <td>Website</td>
+                <td>Any type of text.</td>
+            </tr>
+            </tbody>
+        </table>
+        <p>
+            Example: <code>[dpg-ep-shops-extended link_target="_self" button_text="Ga naar de website"]</code>
+        </p>
+    </div>
+
+    <div class="card" style="min-width:100%;">
+        <h2>Show program based on category</h2>
+        <p><code>[dpg-ep-program-category]</code></p>
+        <p>Display a list with the program grouped by category</p>
+        <p><b>Options:</b></p>
+        <table class="wp-list-table widefat fixed striped table-view-list">
+            <thead>
+            <tr>
+                <th>Option</th>
+                <th>What does it do</th>
+                <th>Default value</th>
+                <th>Valid values</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>link_target</td>
+                <td>Determines how the links are opened.</td>
+                <td>_blank</td>
+                <td>
+                    _blank (opens in new tab)<br>
+                    _self (opens in same tab)
+                </td>
+            </tr>
+            <tr>
+                <td>button_text</td>
+                <td>Determines what the text in the buttons is going to be.</td>
+                <td>Lees meer</td>
+                <td>Any type of text.</td>
+            </tr>
+            <tr>
+                <td>button_link</td>
+                <td>Determines which field to use for the link from the API.</td>
+                <td>website</td>
+                <td>website/readmore</td>
+            </tr>
+            <tr>
+                <td>hide_location</td>
+                <td>Determines if the location needs to be hidden.</td>
+                <td>false</td>
+                <td>false/true</td>
+            </tr>
+            <tr>
+                <td>show_price</td>
+                <td>Determines if the price needs to be shown.</td>
+                <td>false</td>
+                <td>false/true</td>
+            </tr>
+            <tr>
+                <td>free_text</td>
+                <td>Determines what text to show if the price is 0.</td>
+                <td>gratis</td>
+                <td>Any type of text.</td>
+            </tr>
+            </tbody>
+        </table>
+        <p>
+            Example: <code>[dpg-ep-program-category link_target="_self" button_text="website" hide_location="true" show_price="true" free_text="Toegang gratis."]</code>
+        </p>
+    </div>
+
+    <div class="card" style="min-width:100%;">
+        <h2>Show program</h2>
+        <p><code>[dpg-ep-program]</code></p>
+        <p>Display a list with the program</p>
+        <p><b>Options:</b></p>
+        <table class="wp-list-table widefat fixed striped table-view-list">
+            <thead>
+            <tr>
+                <th>Option</th>
+                <th>What does it do</th>
+                <th>Default value</th>
+                <th>Valid values</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>link_target</td>
+                <td>Determines how the links are opened.</td>
+                <td>_blank</td>
+                <td>
+                    _blank (opens in new tab)<br>
+                    _self (opens in same tab)
+                </td>
+            </tr>
+            <tr>
+                <td>button_text</td>
+                <td>Determines what the text in the buttons is going to be.</td>
+                <td>Boek je ticket nu</td>
+                <td>Any type of text.</td>
+            </tr>
+            <tr>
+                <td>button_link</td>
+                <td>Determines which field to use for the link from the API.</td>
+                <td>website</td>
+                <td>website/readmore</td>
+            </tr>
+            <tr>
+                <td>hide_location</td>
+                <td>Determines if the location needs to be hidden.</td>
+                <td>false</td>
+                <td>false/true</td>
+            </tr>
+            <tr>
+                <td>show_price</td>
+                <td>Determines if the price needs to be shown.</td>
+                <td>false</td>
+                <td>false/true</td>
+            </tr>
+            <tr>
+                <td>free_text</td>
+                <td>Determines what text to show if the price is 0.</td>
+                <td>gratis</td>
+                <td>Any type of text.</td>
+            </tr>
+            </tbody>
+        </table>
+        <p>
+            Example: <code>[dpg-ep-program link_target="_self" button_text="Lees meer" hide_location="true" show_price="true" free_text="Toegang gratis."]</code>
+        </p>
     </div>
 
 </div>
