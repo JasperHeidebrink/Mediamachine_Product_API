@@ -67,6 +67,7 @@ class Admin {
 	 * @return void
 	 */
 	public function enqueueScripts(): void {
+		wp_enqueue_media();
 		wp_enqueue_script(
 			'dpg_eventapi_admin',
 			DPG_EVENTAPI_URL . 'assets/admin.js',
