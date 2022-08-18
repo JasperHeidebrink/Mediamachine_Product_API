@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.2.2
+- Add extended shops shortcode
+- Add options to most shortcodes to configure views
+- Some JS optimisations
+- Minor cleanup
+
+### 1.2.1
+- Fixed small bug with jQuery link selector
+
 ### 1.2.0
 - Fix event filters
 - Adjust Views to maka it cleaner
