@@ -37,6 +37,7 @@
 <div class="s-grid c-event-activities">
 
     {% for activity_name, activity in activityList %}
+        {% set link = settings.button_link == 'readmore' ? activity.readmore : activity.website %}
 
         <div class="event__block s-grid__column s-grid__column--4-12"
              data-category="{{ activity.type }}"
@@ -50,15 +51,26 @@
                                  style="background-image: url('{{ activity.media.0.url | default(default_image) }}');"></div>
                         </a>
 
-                        <div class="c-card__title ">
-                            <small>{{ activity.location }}: {{ activity.sublocation }}</small>
+                        <div class="c-card__title">
+                            {% if 'true' != settings.hide_location %}
+                                <small>{{ activity.location }}: {{ activity.sublocation }}</small>
+                            {% endif %}
                             <p class="c-article__title h3">
                                 {{ activity.title }}
                             </p>
 
-                            <a href="{{ activity.readmore }}" type="button" class="c-button c-button--card">BOEK JE
-                                TICKET
-                                NU</a>
+                            {% if 'true' == settings.show_price %}
+                                <p class="c-article__price">
+                                    {% if activity.price matches '/^\\d+$/' and activity.price > 0 %}
+                                        Prijs: € {{ activity.price|number_format(2) }}
+                                    {% else %}
+                                        {{ settings.free_text }}
+                                    {% endif %}
+                                </p>
+                            {% endif %}
+
+                            <a href="{{ link }}" type="button" class="c-button c-button--card"
+                               target="{{ settings.link_target }}">{{ settings.button_text }}</a>
                         </div>
                     </div>
                 </div>
