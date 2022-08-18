@@ -6,6 +6,9 @@
 - Some JS optimisations
 - Minor cleanup
 
+### 1.2.1
+- Fixed small bug with jQuery link selector
+
 ### 1.2.0
 - Fix event filters
 - Adjust Views to maka it cleaner
