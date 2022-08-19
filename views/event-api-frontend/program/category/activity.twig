@@ -24,6 +24,7 @@
                 {% if 'true' != settings.hide_location %}
                     <b>{{ day_activity.location }}: {{ day_activity.sublocation }}</b><br>
                 {% endif %}
+
                 {% if 'true' == settings.show_price %}
                     {% if day_activity.price matches '/^\\d+$/' and day_activity.price > 0 %}
                         Prijs: € {{ day_activity.price|number_format(2) }}<br>
