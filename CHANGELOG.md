@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.2.3
+- Change order Shop location and Shop title in extended view
+
 ### 1.2.2
 - Add extended shops shortcode
 - Add options to most shortcodes to configure views
