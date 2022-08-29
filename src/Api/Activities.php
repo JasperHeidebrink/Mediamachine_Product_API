@@ -119,7 +119,7 @@ class Activities {
 			wp_strip_all_tags( $data['type'] ?? '' ),
 			intval( $data['active'] ?? 1 ),
 			$data['dateActive'] ?? '',
-			self::escape_image($data['media'][0]['url'] ?? '' ),
+			self::escapeImage($data['media'][0]['url'] ?? '' ),
 			wp_strip_all_tags( $timebox['location'] ?? '' ),
 			wp_strip_all_tags( $timebox['sublocation'] ?? '' ),
 			$data['website'] ?? '',
@@ -135,7 +135,7 @@ class Activities {
 	 *
 	 * @return string
 	 */
-	private static function escape_image( string $image_url ): string {
+	private static function escapeImage( string $image_url ): string {
 		if ( ! $image_url ) {
 			return '';
 		}
