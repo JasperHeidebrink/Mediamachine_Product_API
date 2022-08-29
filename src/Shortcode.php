@@ -129,7 +129,7 @@ class Shortcode {
 
 		$context                           = Timber::context();
 		$context['activityListByTimeslot'] = Activities::getGroupedByTimeslot();
-		$context['activityList']           = Activities::getAll( true, true );
+		$context['activityList']           = Activities::getAll( true );
 		$context['dayList']                = Activities::getDaysList();
 		$context['categoryList']           = Activities::getCategoryList();
 		$context['active_activity']        = key( $context['activityListByTimeslot'] );

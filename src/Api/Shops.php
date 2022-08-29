@@ -99,6 +99,7 @@ class Shops {
 			$data['url'] ?? '',
 			$data['stand'] ?? '',
 			$data['branches'] ?? '',
+			$data['stand']['publication_image'] ?? ''
 		);
 	}
 }

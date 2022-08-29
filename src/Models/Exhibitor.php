@@ -23,19 +23,25 @@ class Exhibitor {
 	 * @var array
 	 */
 	protected array $branches;
+	/**
+	 * @var string
+	 */
+	protected string $image;
 
 	public function __construct(
 		string $id,
 		string $title,
 		string $url,
 		array $stand,
-		array $branches
+		array $branches,
+		string $image
 	) {
 		$this->id       = $id;
 		$this->title    = $title;
 		$this->url      = $url;
 		$this->stand    = $stand;
 		$this->branches = $branches;
+		$this->image    = $image;
 	}
 
 	/**
@@ -71,5 +77,12 @@ class Exhibitor {
 	 */
 	public function getBranches(): array {
 		return $this->branches;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getImage(): string {
+		return $this->image;
 	}
 }

@@ -5,6 +5,9 @@ jQuery(document).ready(function ($) {
 
     let text_search = $('input[name="event_shop_search"]');
     let category_select = $('select[name="event_shop_category"]');
+    const empty_container = $(".c-event-no-result");
+
+    empty_container.hide();
 
     text_search.on('keyup', filterShops );
     category_select.on('change', filterShops );
@@ -35,10 +38,10 @@ jQuery(document).ready(function ($) {
             }
         });
 
-        console.log(all_hidden);
-
         if ( all_hidden ) {
-            $(".c-event-no-result").show(EVENT_API_CHANGE_SPEED);
+            empty_container.show(EVENT_API_CHANGE_SPEED);
+        } else {
+            empty_container.hide(EVENT_API_CHANGE_SPEED);
         }
     }
 });

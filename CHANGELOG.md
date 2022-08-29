@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.2.4
+- Fix bug where empty container is always shown
+- Fix bug where images on shop list aren't shown
+- Add image url check when use of ' in image naming and replace them with url friendly sign
+
 ### 1.2.3
 - Change order Shop location and Shop title in extended view
 
