@@ -8,7 +8,7 @@ class Activities {
 	/**
 	 * @return array
 	 */
-	public static function getAll( bool $hideArchive = true, bool $returnArray = false ): array {
+	public static function getAll( bool $hideArchive = true ): array {
 		$current_edition_id = (int) get_option( 'eventapi_edition_id' );
 		$response           = EventApi::get( 'activities', [ 'editionId' => $current_edition_id ] );
 
@@ -23,7 +23,7 @@ class Activities {
 			if ( $hideArchive && ! empty( $item['archived'] ) ) {
 				continue;
 			}
-			$events[ urlencode( trim( $item['title'] ) ) ] = $returnArray ? $item : self::fillItem( $item );
+			$events[ urlencode( trim( $item['title'] ) ) ] = self::fillItem( $item );
 		}
 
 		ksort( $events );
@@ -119,13 +119,29 @@ class Activities {
 			wp_strip_all_tags( $data['type'] ?? '' ),
 			intval( $data['active'] ?? 1 ),
 			$data['dateActive'] ?? '',
-			wp_strip_all_tags( $data['media'][0]['url'] ?? '' ),
+			self::escape_image($data['media'][0]['url'] ?? '' ),
 			wp_strip_all_tags( $timebox['location'] ?? '' ),
 			wp_strip_all_tags( $timebox['sublocation'] ?? '' ),
 			$data['website'] ?? '',
 			$data['readmore'] ?? '',
 			$data['timeboxes'] ?? [],
 		);
+	}
+
+	/**
+	 * Special function to allow "'" in urls see DICO-472.
+	 *
+	 * @param string $image_url
+	 *
+	 * @return string
+	 */
+	private static function escape_image( string $image_url ): string {
+		if ( ! $image_url ) {
+			return '';
+		}
+
+		$image_url = str_replace( "'", "%27", $image_url);
+		return wp_strip_all_tags( $image_url );
 	}
 
 	/**
