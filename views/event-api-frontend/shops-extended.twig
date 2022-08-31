@@ -28,18 +28,18 @@
                 <div class="s-square">
                     <div class="s-square__content">
                         <div class="c-card">
-                            <a href="{{ shop.url }}">
+                            <a href="{{ shop.stand.website }}">
                                 <div class="c-card__image"
-                                     style="background-image: url('{{ shop.image | default(default_image) }}');"></div>
+                                     style="background-image: url('{{ shop.stand.publication_image | default(default_image) }}');"></div>
                             </a>
 
                             <div class="c-card__title ">
                                 <p class="c-article__title h3">
-                                    {{ shop.title }}<br>
+                                    {{ shop.stand.name }}<br>
                                     <small>Locatie: {{ shop.stand.sublocation }}</small>
                                 </p>
 
-                                <a href="{{ shop.url }}" type="button" class="c-button c-button--card" target="{{ settings.link_target }}">{{ settings.button_text }}</a>
+                                <a href="{{ shop.stand.website }}" type="button" class="c-button c-button--card" target="{{ settings.link_target }}">{{ settings.button_text }}</a>
                             </div>
                         </div>
                     </div>
