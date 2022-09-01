@@ -47,6 +47,10 @@ class Activity {
 	 * @var array
 	 */
 	protected array $timebox;
+	/**
+	 * @var array
+	 */
+	protected array $dates;
 
 	public function __construct(
 		string $id,
@@ -72,6 +76,18 @@ class Activity {
 		$this->readmore   = $readmore;
 		$this->website    = $website;
 		$this->timebox    = $timebox ?? [];
+
+		$this->generateDates();
+	}
+
+	private function generateDates() {
+		$dates = [];
+		foreach ($this->timebox as $timebox ) {
+			$dates[] = $timebox['date'];
+		}
+
+		ksort($dates);
+		$this->dates = $dates;
 	}
 
 	/**
@@ -150,4 +166,12 @@ class Activity {
 	public function getTimebox(): array {
 		return $this->timebox;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getDates(): array {
+		return $this->dates;
+	}
+
 }

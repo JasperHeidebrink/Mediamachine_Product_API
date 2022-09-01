@@ -70,8 +70,11 @@ class Activities {
 			];
 		}
 		$dayActivities = [];
+
 		foreach ( $activities as $activity ) {
-			$dayActivities[ $activity['dateActive'] ] = $activity;
+			foreach ($activity['timeboxes'] as $timebox ) {
+				$dayActivities[ $timebox['date'] ] = $activity;
+			}
 		}
 
 		ksort( $dayActivities );

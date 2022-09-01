@@ -42,7 +42,7 @@ jQuery(document).ready(function ($) {
                 item_shown = false;
             }
 
-            if ( item_shown && '0' !== date_value && date_value !== $(this).attr('data-day')) {
+            if ( item_shown && ! $(this).attr('data-days').includes(date_value) ) {
                 item_shown = false;
             }
 

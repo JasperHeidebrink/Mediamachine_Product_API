@@ -24,7 +24,7 @@
         <select name="event_filter_date">
             <option value="0" selected="selected">Alle datums</option>
             {% for day, day_activities in dayList %}
-                <option value="{{ day_activities.dateActive }}"
+                <option value="{{ day }}"
                         {% if active_activity == day %}selected="selected"{% endif %}
                 >{{ day|localDate("j F Y")|capitalize }}</option>
             {% endfor %}
@@ -40,7 +40,7 @@
         {% set link = settings.button_link == 'readmore' ? activity.readmore : activity.website %}
         <div class="event__block s-grid__column s-grid__column--4-12"
              data-category="{{ activity.type|sanitize }}"
-             data-day="{{ activity.dateActive }}">
+             data-days="{{ activity.dates|join(', ') }}">
 
             <div class="s-square">
                 <div class="s-square__content">
