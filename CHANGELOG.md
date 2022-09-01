@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.2.5
+- Fix bug to show pricing
+- Change company name field to use
+- Change website url to use
+
 ### 1.2.4
 - Fix bug where empty container is always shown
 - Fix bug where images on shop list aren't shown
