@@ -27,7 +27,7 @@
 
 
                 {% if 'true' == settings.show_price %}
-                    {% if activity.timebox.0.price matches '/^[-+]?[0-9]*\\.?[0-9]+$/' and activity.timebox.0.price > 0 %}
+                    {% if activity.timebox.0.price matches '/[+-]?([0-9]*[.])?[0-9]+/' and activity.timebox.0.price > 0 %}
                         Prijs: € {{ activity.timebox.0.price|number_format(2) }}<br>
                     {% else %}
                         {{ settings.free_text }}<br>
