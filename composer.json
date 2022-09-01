@@ -1,6 +1,6 @@
 {
   "name": "dpg/dpg-wp-event-api",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Event API plugin to retrieve exhibitors and events",
   "keywords": [
     "Event API",
