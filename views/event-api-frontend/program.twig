@@ -12,7 +12,7 @@
         <select name="event_filter_activity">
             <option value="0">Alle types</option>
             {% for category_name, unused in categoryList %}
-                <option value="{{ category_name|capitalize }}"
+                <option value="{{ category_name|sanitize }}"
                         {% if active_activity == category_name %}selected="selected"{% endif %}
                 >{{ category_name|capitalize }}</option>
             {% endfor %}
@@ -39,7 +39,7 @@
     {% for activity_name, activity in activityList %}
         {% set link = settings.button_link == 'readmore' ? activity.readmore : activity.website %}
         <div class="event__block s-grid__column s-grid__column--4-12"
-             data-category="{{ activity.type }}"
+             data-category="{{ activity.type|sanitize }}"
              data-day="{{ activity.dateActive }}">
 
             <div class="s-square">
