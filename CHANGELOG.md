@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.2.6
+- Fix bugs with filtering on program list
+
 ### 1.2.5
 - Fix bug to show pricing
 - Change company name field to use
