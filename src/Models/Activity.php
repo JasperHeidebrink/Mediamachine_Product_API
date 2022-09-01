@@ -65,29 +65,32 @@ class Activity {
 		string $website = '',
 		array $timebox = [],
 	) {
-		$this->id         = $id;
-		$this->type       = $type;
-		$this->title      = $title;
-		$this->active     = $active ?? 1;
-		$this->dateActive = $dateActive;
-		$this->media   = $media;
-		$this->location   = $location;
-		$this->sublocation   = $sublocation;
-		$this->readmore   = $readmore;
-		$this->website    = $website;
-		$this->timebox    = $timebox ?? [];
-
-		$this->generateDates();
+		$this->id          = $id;
+		$this->type        = $type;
+		$this->title       = $title;
+		$this->active      = $active ?? 1;
+		$this->dateActive  = $dateActive;
+		$this->media       = $media;
+		$this->location    = $location;
+		$this->sublocation = $sublocation;
+		$this->readmore    = $readmore;
+		$this->website     = $website;
+		$this->timebox     = $timebox ?? [];
+		$this->dates       = $this->generateDates();
 	}
 
-	private function generateDates() {
+	/**
+	 * @return array
+	 */
+	private function generateDates(): array {
 		$dates = [];
-		foreach ($this->timebox as $timebox ) {
+		foreach ( $this->timebox as $timebox ) {
 			$dates[] = $timebox['date'];
 		}
 
-		ksort($dates);
-		$this->dates = $dates;
+		ksort( $dates );
+
+		return $dates;
 	}
 
 	/**
