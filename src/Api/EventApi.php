@@ -20,6 +20,11 @@ class EventApi
      */
     private static $routeAccessToken = '/oauth/v2/token';
 
+	/**
+	 * @var
+	 */
+	private static $transientExpiration = HOUR_IN_SECONDS;
+
     /**
      * @var array
      */
@@ -60,7 +65,7 @@ class EventApi
         }
         $response = self::request('GET', $route, $queryRoute);
         $output   = self::output($response);
-        set_transient($transientKey, $output);
+        set_transient($transientKey, $output, self::$transientExpiration );
 
         return $output;
     }
@@ -81,7 +86,7 @@ class EventApi
         }
         $response = self::request('POST', $route, ['access_token' => self::getAccessToken()]);
         $output   = self::output($response);
-        set_transient($transientKey, $output);
+        set_transient($transientKey, $output, self::$transientExpiration);
 
         return $output;
     }
