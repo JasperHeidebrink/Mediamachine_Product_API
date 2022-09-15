@@ -68,12 +68,13 @@ class Shortcode {
 			], $atts
 		);
 
-		$context                  = Timber::context();
-		$shops                    = new Shops();
-		$context['shops']         = $shops->get_shops_at_random();
-		$context['categories']    = $shops->get_categories();
-		$context['default_image'] = get_option( 'event_api_default_image' ) ?? DPG_EVENTAPI_URL . '/assets/placeholder.png';
-		$context['settings']      = $settings;
+		$context                    = Timber::context();
+		$shops                      = new Shops();
+		$context['shops']           = $shops->get_shops_at_random();
+		$context['categories']      = $shops->get_categories();
+		$context['active_category'] = sanitize_text_field( !empty($_GET['categorie'])?$_GET['categorie']:key( $context['categories'] ) );
+		$context['default_image']   = get_option( 'event_api_default_image' ) ?? DPG_EVENTAPI_URL . '/assets/placeholder.png';
+		$context['settings']        = $settings;
 
 		wp_enqueue_script( 'dpg-event-shops' );
 
