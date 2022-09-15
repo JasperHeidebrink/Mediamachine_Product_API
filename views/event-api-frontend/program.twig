@@ -25,7 +25,7 @@
             <option value="0" selected="selected">Alle datums</option>
             {% for day, day_activities in dayList %}
                 <option value="{{ day }}"
-                        {% if active_activity == day %}selected="selected"{% endif %}
+                        {% if active_day == day %}selected="selected"{% endif %}
                 >{{ day|localDate("j F Y")|capitalize }}</option>
             {% endfor %}
         </select>
