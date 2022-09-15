@@ -100,9 +100,9 @@ class Shortcode {
 
 		$context                           = Timber::context();
 		$context['activityListByTimeslot'] = Activities::getGroupedByTimeslot();
-		$context['active_activity']        = key( $context['activityListByTimeslot'] );
 		$context['default_image']          = get_option( 'event_api_default_image' ) ?? DPG_EVENTAPI_URL . '/assets/placeholder.png';
 		$context['settings']               = $settings;
+		$context['active_activity']        = sanitize_text_field( $_GET['activiteit']?:key( $context['activityListByTimeslot'] ) );
 
 		wp_enqueue_script( 'dpg-event-category-filter' );
 
