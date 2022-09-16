@@ -60,4 +60,6 @@ jQuery(document).ready(function ($) {
             empty_container.show();
         }
     }
+
+    dpg_event_filter();
 });
