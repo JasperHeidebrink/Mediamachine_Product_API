@@ -13,7 +13,7 @@
             <option value="0">Alle types</option>
             {% for category_name, unused in categoryList %}
                 <option value="{{ category_name|sanitize }}"
-                        {% if active_activity == category_name %}selected="selected"{% endif %}
+                        {% if active_activity|lower == category_name|lower %}selected="selected"{% endif %}
                 >{{ category_name|capitalize }}</option>
             {% endfor %}
         </select>
@@ -25,7 +25,7 @@
             <option value="0" selected="selected">Alle datums</option>
             {% for day, day_activities in dayList %}
                 <option value="{{ day }}"
-                        {% if active_activity == day %}selected="selected"{% endif %}
+                        {% if active_day == day %}selected="selected"{% endif %}
                 >{{ day|localDate("j F Y")|capitalize }}</option>
             {% endfor %}
         </select>
