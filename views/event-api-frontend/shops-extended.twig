@@ -12,7 +12,9 @@
         <select name="event_shop_category">
             <option value="#">Alle</option>
             {% for category in categories %}
-                <option value="{{ category|lower }}">{{ category|capitalize }}</option>
+                <option value="{{ category|lower }}"
+                    {% if active_category|lower == category|lower %}selected="selected"{% endif %}
+                >{{ category|capitalize }}</option>
             {% endfor %}
         </select>
     </div>
