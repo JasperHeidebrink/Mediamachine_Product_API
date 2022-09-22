@@ -4,7 +4,8 @@
         <label for="event_filter_text">Zoek</label>
         <input type="text"
                placeholder="zoeken"
-               name="event_filter_text">
+               name="event_filter_text"
+               value="{{ active_search }}">
     </div>
 
     <div class="s-grid__column s-grid__column--4-12">
@@ -13,7 +14,7 @@
             <option value="0">Alle types</option>
             {% for category_name, unused in categoryList %}
                 <option value="{{ category_name|sanitize }}"
-                        {% if active_activity|lower == category_name|lower %}selected="selected"{% endif %}
+                        {% if active_activity|sanitize == category_name|sanitize %}selected="selected"{% endif %}
                 >{{ category_name|capitalize }}</option>
             {% endfor %}
         </select>
