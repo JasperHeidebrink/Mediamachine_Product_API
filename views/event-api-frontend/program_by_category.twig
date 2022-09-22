@@ -1,15 +1,15 @@
 <div class="c-event-activities-category">
     <nav>
         {% for category_name, unused in activityListByTimeslot %}
-            <a href="#" data-category="{{ category_name|lower }}"
-               {% if active_activity == category_name %}class="active"{% endif %}
+            <a href="#" data-category="{{ category_name|sanitize }}"
+               {% if active_activity|sanitize == category_name|sanitize %}class="active"{% endif %}
             >{{ category_name|capitalize }}</a>
         {% endfor %}
     </nav>
 
     {% for category_name, days_activities in activityListByTimeslot %}
         <div class="c-event-category"
-             data-category="{{ category_name|lower }}">
+             data-category="{{ category_name|sanitize }}">
             {% for day, day_activities in days_activities %}
                 {% include 'event-api-frontend/program/category/day.twig' with {
                     'day': day,
