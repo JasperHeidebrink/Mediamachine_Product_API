@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.2.9
+- filter with sanitized values and allow to use the wildcard search.
+
+### 1.2.8
+- fill the active_activity with a get variable if available
+
+### 1.2.7
+- expire the transient ( API cache ) after 1 hour.
+
 ### 1.2.6
 - Fix bugs with filtering on program list
 
