@@ -223,8 +223,9 @@
             <tr>
                 <td>GET param: activiteit</td>
                 <td>
-                    Prefill the activity filter with an extra variable in the url.<br>
-                    Add <b>?activiteit=workshop</b> at the end of the url<br>
+                    Prefill the activity filter by using an extra variable in the url.<br>
+                    Add <b>?activiteit=workshop</b> at the end of the url, use lowercase and the sanatized label.<br>
+                    This value should be the same as the 'value' of the option that you want to pre-select.<br>
                     Example:<br>
                     https://vtwonenendesignbeurs.nl/programma/?activiteit=workshop
                 </td>
@@ -234,13 +235,25 @@
             <tr>
                 <td>GET param: dag</td>
                 <td>
-                    Prefill the date filter with an extra variable in the url.<br>
-                    Add <b>?dag=workshop</b> at the end of the url<br>
+                    Prefill the date filter by using an extra variable in the url.<br>
+                    Add <b>?dag=2022-10-04</b> at the end of the url.<br>
+                    This value should be the same as the 'value' of the option that you want to pre-select.<br>
                     Example:<br>
                     https://vtwonenendesignbeurs.nl/programma/?dag=2022-10-04
                 </td>
                 <td></td>
-                <td>Any type of text in US date format.</td>
+                <td>Any type of text in US_us date format.</td>
+            </tr>
+            <tr>
+                <td>GET param: zoek</td>
+                <td>
+                    Prefill the search field by using an extra variable in the url.<br>
+                    Add <b>?zoek=advies</b> at the end of the url, this value will be pre-filled in the search area.<br>
+                    Example:<br>
+                    https://vtwonenendesignbeurs.nl/programma/?zoek=advies
+                </td>
+                <td></td>
+                <td>Any type of text.</td>
             </tr>
             </tbody>
         </table>

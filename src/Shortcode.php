@@ -72,7 +72,7 @@ class Shortcode {
 		$shops                      = new Shops();
 		$context['shops']           = $shops->get_shops_at_random();
 		$context['categories']      = $shops->get_categories();
-		$context['active_category'] = sanitize_text_field( !empty($_GET['categorie'])?$_GET['categorie']:key( $context['categories'] ) );
+		$context['active_category'] = sanitize_text_field( ! empty( $_GET['categorie'] ) ? $_GET['categorie'] : key( $context['categories'] ) );
 		$context['default_image']   = get_option( 'event_api_default_image' ) ?? DPG_EVENTAPI_URL . '/assets/placeholder.png';
 		$context['settings']        = $settings;
 
@@ -89,14 +89,14 @@ class Shortcode {
 	public function get_program_categorized_content( $atts = [] ): string {
 
 		$settings = shortcode_atts(
-			[
-				'link_target'   => '_blank',
-				'button_text'   => 'Lees meer',
-				'button_link'   => 'website',
-				'hide_location' => 'false',
-				'show_price'    => 'false',
-				'free_text'     => 'gratis'
-			], $atts
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       [
+				                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    'link_target'   => '_blank',
+				                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    'button_text' => 'Lees meer',
+				                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    'button_link' => 'website',
+				                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    'hide_location' => 'false',
+				                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    'show_price'    => 'false',
+				                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    'free_text'     => 'gratis'
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ], $atts
 		);
 
 		$context                           = Timber::context();
@@ -118,14 +118,14 @@ class Shortcode {
 	public function get_program_content( $atts = [] ): string {
 
 		$settings = shortcode_atts(
-			array(
+			   [
 				'link_target'   => '_blank',
-				'button_text'   => 'Boek je ticket nu',
-				'button_link'   => 'website',
+				'button_text' => 'Boek je ticket nu',
+				'button_link' => 'website',
 				'hide_location' => 'false',
 				'show_price'    => 'false',
 				'free_text'     => 'gratis'
-			), $atts
+			], $atts
 		);
 
 		$context                           = Timber::context();
@@ -133,8 +133,9 @@ class Shortcode {
 		$context['activityList']           = Activities::getAll( true );
 		$context['dayList']                = Activities::getDaysList();
 		$context['categoryList']           = Activities::getCategoryList();
-		$context['active_activity']        = sanitize_text_field( !empty($_GET['activiteit'])?$_GET['activiteit']:key( $context['activityListByTimeslot'] ) );
-		$context['active_day']             = sanitize_text_field( !empty($_GET['dag'])?$_GET['dag']:'' );
+		$context['active_activity']        = sanitize_text_field( ! empty( $_GET['activiteit'] ) ? $_GET['activiteit'] : key( $context['activityListByTimeslot'] ) );
+		$context['active_day']             = sanitize_text_field( ! empty( $_GET['dag'] ) ? $_GET['dag'] : '' );
+		$context['active_search']          = sanitize_text_field( ! empty( $_GET['zoek'] ) ? $_GET['zoek'] : '' );
 		$context['default_image']          = get_option( 'event_api_default_image' ) ?? DPG_EVENTAPI_URL . '/assets/placeholder.png';
 		$context['settings']               = $settings;
 
