@@ -133,7 +133,7 @@ class Shortcode {
 		$context['activityList']           = Activities::getAll( true );
 		$context['dayList']                = Activities::getDaysList();
 		$context['categoryList']           = Activities::getCategoryList();
-		$context['active_activity']        = sanitize_text_field( ! empty( $_GET['activiteit'] ) ? $_GET['activiteit'] : key( $context['activityListByTimeslot'] ) );
+		$context['active_activity']        = sanitize_text_field( ! empty( $_GET['activiteit'] ) ? $_GET['activiteit'] : '' );
 		$context['active_day']             = sanitize_text_field( ! empty( $_GET['dag'] ) ? $_GET['dag'] : '' );
 		$context['active_search']          = sanitize_text_field( ! empty( $_GET['zoek'] ) ? $_GET['zoek'] : '' );
 		$context['default_image']          = get_option( 'event_api_default_image' ) ?? DPG_EVENTAPI_URL . '/assets/placeholder.png';
