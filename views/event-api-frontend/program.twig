@@ -11,7 +11,7 @@
     <div class="s-grid__column s-grid__column--4-12">
         <label for="event_filter_activity">Kies een activiteit</label>
         <select name="event_filter_activity">
-            <option value="0">Alle types</option>
+            <option value="0" selected="selected">Alle types</option>
             {% for category_name, unused in categoryList %}
                 <option value="{{ category_name|sanitize }}"
                         {% if active_activity|sanitize == category_name|sanitize %}selected="selected"{% endif %}
