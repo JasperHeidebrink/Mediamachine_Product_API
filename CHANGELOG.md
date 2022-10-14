@@ -1,7 +1,11 @@
 ## Changelog
 
+### 1.2.11
+- Init the filterShops on load
+
 ### 1.2.10
 - fix default value without a GET var for activity's inside programs.
+
 ### 1.2.9
 - filter with sanitized values and allow to use the wildcard search.
 
