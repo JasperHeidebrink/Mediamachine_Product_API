@@ -44,4 +44,6 @@ jQuery(document).ready(function ($) {
             empty_container.hide(EVENT_API_CHANGE_SPEED);
         }
     }
+
+    filterShops();
 });
