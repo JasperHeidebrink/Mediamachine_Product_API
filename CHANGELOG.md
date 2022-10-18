@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.2.12
+- Fix read more link for activities
+- Don't show img-tag if no media available for activities.
+
 ### 1.2.11
 - Init the filterShops on load
 
