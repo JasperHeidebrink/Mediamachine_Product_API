@@ -8,10 +8,12 @@
     </a>
 
     <div data-item="{{ day_activity_hash|md5 }}">
-        <div class="image">
-            <img src="{{ day_activity.image | default(default_image) }}"
-                 alt="{{ day_activity.title }}">
-        </div>
+        {% if day_activity.image %}
+            <div class="image">
+                <img src="{{ day_activity.image | default(default_image) }}"
+                     alt="{{ day_activity.title }}">
+            </div>
+        {% endif %}
 
         <div class="content">
             <h3>
@@ -25,7 +27,6 @@
                     <b>{{ day_activity.location }}: {{ day_activity.sublocation }}</b><br>
                 {% endif %}
 
-
                 {% if 'true' == settings.show_price %}
                     {% if activity.timebox.0.price matches '/[+-]?([0-9]*[.])?[0-9]+/' and activity.timebox.0.price > 0 %}
                         Prijs: € {{ activity.timebox.0.price|number_format(2) }}<br>
@@ -38,7 +39,7 @@
             </p>
             {% if day_activity.readmore %}
                 <p>
-                    <a href="{{ link }}" target="{{ settings.link_target }}">{{ settings.button_text }}</a>
+                    <a href="{{ day_activity.readmore }}" target="{{ settings.link_target }}">{{ settings.button_text }}</a>
                 </p>
             {% endif %}
         </div>
