@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.2.13
+- Update of dependencies in Composer
+
 ### 1.2.12
 - Fix read more link for activities
 - Don't show img-tag if no media available for activities.
