@@ -3,34 +3,55 @@
  * @package   DPG_WP_EventApi
  */
 jQuery(document).ready(function ($) {
-    $('select#eventapi_event_id,select#eventapi_edition_id').change( function () {
-        let form =$(this).parents('form');
-        form.find('input[type=submit]').click();
-    });
+    let loading        = true,
+        status_element = jQuery('.mm-api-status'),
+        reload_button  = jQuery('button.mm_api_reload'),
+        stop_button    = jQuery('button.mm_api_stop');
 
-    let custom_uploader;
 
-    $('#event_api_default_image_button').click(function(e) {
-        e.preventDefault();
-        //If the uploader object has already been created, reopen the dialog
-        if (custom_uploader) {
-            custom_uploader.open();
+
+    reload_button.click(
+        function () {
+            status_element.html('');
+            stop_button.removeClass('hidden');
+            reload_button.addClass('hidden');
+            loading = true;
+            load_api_data(1);
+        }
+    );
+    stop_button.click(
+        function () {
+            stop_button.addClass('hidden');
+            reload_button.removeClass('hidden');
+            loading = false;
+        }
+    );
+
+    function load_api_data(current_page) {
+        if (false === loading) {
             return;
         }
-        //Extend the wp.media object
-        custom_uploader = wp.media.frames.file_frame = wp.media({
-            title: 'Kies een afbeelding',
-            button: {
-                text: 'Kies Afbeelding'
+
+        jQuery.ajax({
+            url    : mm_api_admin.ajax_url,
+            type   : 'POST',
+            data   : {
+                'action': 'mmloadapidata',
+                'page'  : current_page,
             },
-            multiple: false
+            success: function (response) {
+                if (false === response.success) {
+                    stop_button.trigger('click');
+                    loading = false;
+                }
+                status_element.append(response.data + '<br/>');
+                status_element.animate({scrollTop: status_element.prop("scrollHeight")}, 1000);
+                load_api_data(++current_page);
+            },
+            error  : function () {
+                console.log('MM Error on page ' + current_page + ' Lets retry');
+                load_api_data(current_page);
+            }
         });
-        //When a file is selected, grab the URL and set it as the text field's value
-        custom_uploader.on('select', function() {
-            let attachment = custom_uploader.state().get('selection').first().toJSON();
-            $('#event_api_default_image').val(attachment.url);
-        });
-        //Open the uploader dialog
-        custom_uploader.open();
-    });
+    }
 });
