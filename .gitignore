@@ -1,0 +1,20 @@
+# Application
+#node_modules
+
+# Dotenv
+.env
+.env.*
+
+# Composer
+!vendor/.gitkeep
+
+## macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# User-specific stuff
+.idea
+_org
+_theme
