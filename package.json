@@ -6,17 +6,11 @@
         "php": ">=8.4"
     },
     "scripts": {
-        "build": "npm run css && npm run js",
-        "dev": "npm run build && concurrently \"npm:watch:css\" \"npm:watch:js\"",
-        "css": "sass assets/src/admin.scss assets/admin.css --style compressed --no-source-map",
-        "js": "terser assets/admin.js -o assets/admin.min.js --compress --mangle",
-        "watch:css": "sass assets/src/admin.scss assets/admin.css --style compressed --no-source-map --watch",
-        "watch:js": "chokidar \"assets/admin.js\" -c \"terser assets/admin.js -o assets/admin.min.js --compress --mangle\""
+        "dev": "NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "production": "NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "chokidar-cli": "^3.0.0",
-        "concurrently": "^8.2.0",
-        "sass": "^1.77.0",
-        "terser": "^5.31.0"
+        "laravel-mix": "^6.0.49"
     }
 }

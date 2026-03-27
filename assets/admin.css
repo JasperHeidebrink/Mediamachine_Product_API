@@ -1,1 +1,5 @@
-.mm-api-status{max-height:25rem;overflow-y:scroll;width:100%;white-space:nowrap;bgcolor:#f1f1f1}
+.mm-api-status,
+.mm-api-import-status {
+  max-height: 25rem;
+  overflow-y: auto;
+}
