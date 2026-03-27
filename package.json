@@ -2,6 +2,9 @@
     "name": "mm-product-api",
     "version": "1.0.0",
     "private": true,
+    "engines": {
+        "php": ">=8.4"
+    },
     "scripts": {
         "build": "npm run css && npm run js",
         "dev": "npm run build && concurrently \"npm:watch:css\" \"npm:watch:js\"",
