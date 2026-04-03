@@ -43,12 +43,18 @@ class StockApi
             [
                 'body' =>
                     [
-                        'token' => $this->api_key,
+                        'token'     => $this->api_key,
+                        'sslverify' => false,
                     ],
             ]
         );
+
         if (is_wp_error($response)) {
-            return $response;
+            return [
+                'error'   => $response->get_error_code(),
+                'message' => $response->get_error_message(),
+                'data'    => ['url' => $url],
+            ];
         }
 
         $body = wp_remote_retrieve_body($response);
@@ -75,9 +81,27 @@ class StockApi
      */
     public static function get_products($page = 1): array
     {
-        $products = (new self())->post('products', ['page' => $page], []);
-//        return $products['data'];
-        $output   = [];
+        $products = (new self())->post('products', ['page' => $page, 'limit' => -1], []);
+
+        if (isset($products['error'])) {
+            return [
+                'error'   => $products['error'],
+                'message' => $products['message'],
+                'data'    => $products['data'] ?? null,
+            ];
+        }
+
+        $output = [
+            'meta' => [
+                'per_page'     => $products['meta']['per_page'],
+                'to'           => $products['meta']['to'],
+                'total'        => $products['meta']['total'],
+                'current_page' => $products['meta']['current_page'],
+                'from'         => $products['meta']['from'],
+                'last_page'    => $products['meta']['last_page'],
+            ],
+        ];
+
         foreach ($products['data'] as $product) {
             $output[$product['sku']] = [
                 'id'             => $product['id'],
@@ -88,6 +112,7 @@ class StockApi
                 'brand_name'     => $product['brand_name'],
             ];
         }
+
         return $output;
     }
 }

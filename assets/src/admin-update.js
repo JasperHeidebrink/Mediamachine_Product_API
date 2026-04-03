@@ -1,4 +1,5 @@
 "use strict";
+
 /**
  * Update Products Module
  * @package MM_Product_API
@@ -7,17 +8,18 @@
 export function initUpdateProducts() {
     // UPDATE PRODUCTS
     let loading        = true,
-        status_element = jQuery('.mm-api-status'),
         reload_button  = jQuery('button.mm_api_reload'),
         stop_button    = jQuery('button.mm_api_stop');
 
     reload_button.click(
         function () {
-            status_element.html('');
+            jQuery('.mm-api-status').html('');
+            addStatusMessage('Loading data...');
             stop_button.removeClass('hidden');
             reload_button.addClass('hidden');
+
             loading = true;
-            load_api_data(1);
+            api_load_data(1);
         }
     );
     stop_button.click(
@@ -28,7 +30,7 @@ export function initUpdateProducts() {
         }
     );
 
-    function load_api_data(current_page) {
+    function api_load_data(current_page) {
         if (false === loading) {
             return;
         }
@@ -42,16 +44,18 @@ export function initUpdateProducts() {
             },
             success: function (response) {
                 if (false === response.success) {
+                    console.log(response);
+                    addStatusMessage(response.data.message, 'notification');
                     stop_button.trigger('click');
-                    loading = false;
+                    return;
                 }
-                status_element.append(response.data + '<br/>');
-                status_element.animate({scrollTop: status_element.prop("scrollHeight")}, 1000);
-                load_api_data(++current_page);
+                addStatusMessage(response.data);
+                api_load_data(++current_page);
             },
             error  : function () {
-                console.log('MM Error on page ' + current_page + ' Lets retry');
-                load_api_data(current_page);
+                console.log('MM Error on page ' + current_page + '. Stopping updates.');
+                addStatusMessage('Error on page ' + current_page + '. Stopping updates.', 'notification');
+                stop_button.trigger('click');
             }
         });
     }

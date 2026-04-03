@@ -14,23 +14,30 @@ use MMProductApi\Api\StockApi;
  */
 class ProductUpdater
 {
-    private $api_client;
-
     public function __construct()
     {
-        $this->api_client = new StockApi();
     }
 
     public function update_prices_from_api($page = 0, $posts_per_page = 20)
     {
         $api_data = $this->get_api_data();
-        if (is_wp_error($api_data)) {
-            return ['error' => 'Failed to fetch data from API'];
+        if (is_wp_error($api_data) || array_key_exists('error', $api_data)) {
+            return [
+                'log'     => __LINE__,
+                'error'   => 'API error',
+                'message' => $api_data['message'] ?? 'Failed to fetch data from API',
+                'data'    => $api_data['data'] ?? null,
+            ];
         }
 
         $products = $this->get_products($page, $posts_per_page);
         if (empty($products)) {
-            return ['error' => 'No new products found'];
+            return [
+                'log'     => __LINE__,
+                'error'   => 'No products',
+                'message' => 'No products found in API',
+                'data'    => $api_data['data'] ?? null,
+            ];
         }
 
         $output = '';
@@ -92,28 +99,36 @@ class ProductUpdater
     /**
      * Count new products from API that don't exist on the website
      *
-     * @return int|array
+     * @return array
      */
-    public function count_new_products()
+    public function count_new_products(): array
     {
         $api_data = $this->get_api_data();
-        if (is_wp_error($api_data)) {
-            return ['error' => 'Failed to fetch data from API'];
+
+        if (is_wp_error($api_data) || isset($api_data['error'])) {
+            return [
+                'log'     => __LINE__,
+                'error'   => $api_data['error'],
+                'message' => $api_data['message'] ?? 'Failed to fetch data from API',
+                'data'    => $api_data['data'] ?? null,
+            ];
         }
 
         $existing_skus = $this->get_existing_skus();
-//        return ['existing_skus' => $existing_skus, 'api_skus' => array_keys($api_data ?? []), 'data' => $api_data];
-        if (empty($api_data)) {
-            return 0;
-        }
+
         $data = [
             'new_skus'       => [],
             'new'            => 0,
             'total_api'      => count($api_data),
             'total_existing' => count($existing_skus),
         ];
+
+        if (empty($data)) {
+            return $data;
+        }
+
         foreach ($api_data as $product) {
-            if (!in_array($product['sku'], $existing_skus)) {
+            if (!in_array($product['sku'], $existing_skus, true)) {
                 $data['new']++;
                 $data['new_skus'][] = $product['sku'];
             }
@@ -130,8 +145,8 @@ class ProductUpdater
     private function get_existing_skus(): array
     {
         $args     = [
-            'limit'  => -1,
-            'return' => 'ids',
+            'limit'   => -1,
+            'return ' => 'ids',
         ];
         $products = wc_get_products($args);
         $skus     = [];
@@ -153,48 +168,66 @@ class ProductUpdater
      * @param int $posts_per_page
      * @return array|string
      */
-    public function import_new_products_from_api($page = 0, $posts_per_page = 20)
+    public function import_new_products_from_api($page = 0, $posts_per_page = 20): array|string
     {
-        $api_data = $this->get_api_data();
+        $api_data = $this->get_api_data($page);
         if (is_wp_error($api_data)) {
-            return ['error' => 'Failed to fetch data from API'];
+            return [
+                'log'     => __LINE__,
+                'error'   => 'API error',
+                'message' => 'Failed to fetch data from API',
+                'data'    => $api_data['data'] ?? null,
+            ];
         }
 
         $existing_skus = $this->get_existing_skus();
 
-        if (empty($api_data) || empty($existing_skus)) {
-            return ['error' => 'No products found in API'];
+        if (empty($api_data)) {
+            return [
+                'error'   => 'No products',
+                'message' => 'No products found in API',
+            ];
         }
 
-        $output  = '';
-        $counter = 0;
+        $output        = [];
+        $create_result = [];
+        $counter       = 0;
 
         foreach ($api_data as $api_product) {
             $sku = $api_product['sku'] ?? null;
-            // Skip existing products
-            if (in_array($sku, $existing_skus)) {
+            if (in_array($sku, $existing_skus, true)) {
                 continue;
             }
 
-            // Only process products for this page
-            if ($counter > ($page * $posts_per_page) && $counter <= (($page - 1) * $posts_per_page)) {
-                continue;
-            }
-            $result = $this->create_product_from_api($api_product, $sku);
+            $result          = $this->create_product_from_api($api_product, $sku);
+            $create_result[] = $result;
 
             if (is_wp_error($result)) {
-                $output .= '<div class="log-error">Error creating product SKU ' . $sku . ': ' .
-                           $result->get_error_message() . '</div>';
+                $output[] = ' < span class="log-error" > Error creating product SKU ' . $sku . ': ' .
+                            $result->get_error_message() . ' </span > ';
                 continue;
             }
 
-            $output .= '<div class="log-debug">' .
-                       'Created: Product ID ' . $result . ' (SKU: ' . $sku . ') - ' .
-                       $api_product['title'] . '</div>';
+            $output[] = '<span class="log-debug" > ' .
+                        'Created: Product ID ' . $result . ' (SKU: ' . $sku . ') - ' .
+                        $api_product['title'] . ' </span > ';
             $counter++;
         }
 
-        return $output;
+        $new = 0;
+        foreach ($api_data as $product) {
+            if (!in_array($product['sku'], $this->get_existing_skus(), true)) {
+                $new++;
+            }
+        }
+
+        return [
+            'counter'       => $counter,
+            'page'          => $page,
+            'result'        => implode(' < br>', $output),
+            'create_result' => $create_result,
+            'new'           => $new,
+        ];
     }
 
     /**
