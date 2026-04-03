@@ -128,9 +128,13 @@ class ProductUpdater
         }
 
         foreach ($api_data as $product) {
-            if (!in_array($product['sku'], $existing_skus, true)) {
+            $sku = $product['sku'] ?? 0;
+            if (empty($sku)) {
+                continue;
+            }
+            if (!in_array($sku, $existing_skus, true)) {
                 $data['new']++;
-                $data['new_skus'][] = $product['sku'];
+                $data['new_skus'][] = $sku;
             }
         }
 
@@ -180,10 +184,9 @@ class ProductUpdater
             ];
         }
 
-        $existing_skus = $this->get_existing_skus();
-
         if (empty($api_data)) {
             return [
+                'log'     => __LINE__,
                 'error'   => 'No products',
                 'message' => 'No products found in API',
             ];
@@ -192,10 +195,12 @@ class ProductUpdater
         $output        = [];
         $create_result = [];
         $counter       = 0;
+        $existing_skus = $this->get_existing_skus();
 
         foreach ($api_data as $api_product) {
-            $sku = $api_product['sku'] ?? null;
-            if (in_array($sku, $existing_skus, true)) {
+            $sku   = $api_product['sku'] ?? 0;
+            $title = $api_product['title'] ?? 'no name';
+            if (empty($sku) || in_array($sku, $existing_skus, true)) {
                 continue;
             }
 
@@ -203,20 +208,26 @@ class ProductUpdater
             $create_result[] = $result;
 
             if (is_wp_error($result)) {
-                $output[] = ' < span class="log-error" > Error creating product SKU ' . $sku . ': ' .
-                            $result->get_error_message() . ' </span > ';
+                $output[] = '<span class="log-error">Error creating product SKU ' .
+                            $sku . ': ' . $result->get_error_message() .
+                            '</span>';
                 continue;
             }
 
-            $output[] = '<span class="log-debug" > ' .
-                        'Created: Product ID ' . $result . ' (SKU: ' . $sku . ') - ' .
-                        $api_product['title'] . ' </span > ';
+            $url      = get_admin_url() . 'post.php?action=edit&post=' . $result;
+            $output[] = '<span class="log-debug">Created: <a href="' . $url . '" target="edit">' .
+                        'ID: ' . $result . 'SKU: ' . $sku . ' : ' . $title .
+                        '</a></span>';
             $counter++;
         }
 
         $new = 0;
         foreach ($api_data as $product) {
-            if (!in_array($product['sku'], $this->get_existing_skus(), true)) {
+            $sku = $product['sku'] ?? 0;
+            if (empty($sku)) {
+                continue;
+            }
+            if (!in_array($sku, $this->get_existing_skus(), true)) {
                 $new++;
             }
         }
@@ -224,7 +235,7 @@ class ProductUpdater
         return [
             'counter'       => $counter,
             'page'          => $page,
-            'result'        => implode(' < br>', $output),
+            'result'        => implode('<br>', $output),
             'create_result' => $create_result,
             'new'           => $new,
         ];
@@ -242,31 +253,41 @@ class ProductUpdater
         $api_product,
         $sku
     ) {
+        if (empty($sku) || $sku === 0) {
+            return new \WP_Error('invalid_sku', 'SKU is required to create product');
+        }
+
         $product = new \WC_Product_Simple();
 
-        $product->set_name($api_product['title']);
+        $product_title   = $api_product['title'] ?? 'Untitled Product';
+        $price_end_user  = $api_product['price_end_user'] ?? 0;
+        $available_stock = $api_product['available_stock'] ?? 0;
+        $price_reseller  = $api_product['price_reseller'] ?? 0;
+
+        $product->set_name($product_title);
         $product->set_sku($sku);
         $product->set_status('draft');
         $product->set_catalog_visibility('hidden');
 
         // Set prices
-        $product->set_regular_price($api_product['price_end_user']);
+        $product->set_regular_price($price_end_user);
 
         // Set stock
         $product->set_manage_stock(true);
-        $product->set_stock_quantity($api_product['available_stock'] ?? 0);
+        $product->set_stock_quantity($available_stock);
 
         // Save product
         $product_id = $product->save();
+        add_post_meta($product_id, 'api_data', json_encode($api_product));
 
         if (!$product_id) {
             return new \WP_Error('product_creation_failed', 'Could not create product');
         }
 
         // Set ACF fields for reseller prices
-        update_post_meta($product_id, 'reseller_price', $api_product['price_reseller']);
-        update_post_meta($product_id, 'resellerbasic_price', $api_product['price_end_user']);
-        update_post_meta($product_id, 'stock_quantity', $api_product['available_stock']);
+        update_post_meta($product_id, 'reseller_price', $price_reseller);
+        update_post_meta($product_id, 'resellerbasic_price', $price_end_user);
+        update_post_meta($product_id, 'stock_quantity', $available_stock);
 
         return $product_id;
     }
