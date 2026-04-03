@@ -62,6 +62,7 @@ class ProductUpdater
             update_post_meta($productId, 'reseller_price', $api_data['products'][$sku]['price_reseller']);
             update_post_meta($productId, 'resellerbasic_price', $api_data['products'][$sku]['price_end_user']);
             update_post_meta($productId, 'stock_quantity', $api_data['products'][$sku]['available_stock']);
+            update_post_meta($productId, 'api_data', json_encode($api_data['products'][$sku]));
 
             $output .= "<div class=\"log-debug\">Updated: Product ID {$productId} (SKU: $sku) ";
             $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' . $product->get_title(
