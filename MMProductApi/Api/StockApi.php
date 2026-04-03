@@ -41,10 +41,10 @@ class StockApi
         $response = wp_remote_post(
             $url,
             [
-                'body' =>
+                'sslverify' => false,
+                'body'      =>
                     [
-                        'token'     => $this->api_key,
-                        'sslverify' => false,
+                        'token' => $this->api_key,
                     ],
             ]
         );
