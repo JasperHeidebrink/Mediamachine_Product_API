@@ -20,7 +20,7 @@ class ProductUpdater
 
     public function update_prices_from_api($page = 0, $posts_per_page = 20)
     {
-        $api_data = $this->get_api_data();
+        $api_data = $this->get_api_data(0);
         if (is_wp_error($api_data) || array_key_exists('error', $api_data)) {
             return [
                 'log'     => __LINE__,
@@ -46,27 +46,27 @@ class ProductUpdater
             $sku       = $product->get_sku();
             $productId = $product->get_id();
             if (!$sku) {
-                $output .= "<div class=\"log-error\">No SKU number found for product ID {$productId}";
-                $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' . $product->get_title(
-                    ) . '</a></div>';
+                $output .= "<div class=\"log-error\">No SKU number found for product ID: {$productId}";
+                $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' .
+                           $product->get_title() . '</a></div>';
                 continue;
             }
 
-            if (!isset($api_data['products'][$sku])) {
-                $output .= "<div class=\"log-alert\">No API data found for SKU {$sku}";
-                $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' . $product->get_title(
-                    ) . '</a></div>';
+            if (!isset($api_data[$sku])) {
+                $output .= "<div class=\"log-alert\">No API data found for SKU: {$sku}";
+                $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' .
+                           $product->get_title() . '</a></div>';
                 continue;
             }
 
-            update_post_meta($productId, 'reseller_price', $api_data['products'][$sku]['price_reseller']);
-            update_post_meta($productId, 'resellerbasic_price', $api_data['products'][$sku]['price_end_user']);
-            update_post_meta($productId, 'stock_quantity', $api_data['products'][$sku]['available_stock']);
-            update_post_meta($productId, 'api_data', json_encode($api_data['products'][$sku]));
+            update_post_meta($productId, 'reseller_price', $api_data[$sku]['price_reseller']);
+            update_post_meta($productId, 'resellerbasic_price', $api_data[$sku]['price_end_user']);
+            update_post_meta($productId, 'stock_quantity', $api_data[$sku]['available_stock']??0);
+            update_post_meta($productId, 'api_data', json_encode($api_data[$sku]));
 
-            $output .= "<div class=\"log-debug\">Updated: Product ID {$productId} (SKU: $sku) ";
-            $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' . $product->get_title(
-                ) . '</a></div>';
+            $output .= "<div class=\"log-debug\">Updated product ID: {$productId} (SKU: $sku) ";
+            $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' .
+                       $product->get_title() . '</a></div>';
         }
 
         return $output;
