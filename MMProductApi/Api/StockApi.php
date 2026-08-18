@@ -74,10 +74,10 @@ class StockApi
     }
 
     /**
-     * Fetch product price by SKU
+     * Fetch products
      *
-     * @param string $sku
-     * @return float|false
+     * @param int $page
+     * @return array
      */
     public static function get_products($page = 1): array
     {
@@ -103,8 +103,9 @@ class StockApi
         ];
 
         foreach ($products['data'] as $product) {
-            $output[$product['sku']] = [
+            $output[$product['code']] = [
                 'id'             => $product['id'],
+                'code'           => $product['code'],
                 'sku'            => $product['sku'],
                 'price_reseller' => $product['price_reseller'],
                 'price_end_user' => $product['price_end_user'],

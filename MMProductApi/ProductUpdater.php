@@ -20,7 +20,7 @@ class ProductUpdater
 
     public function update_prices_from_api($page = 0, $posts_per_page = 20)
     {
-        $api_data = $this->get_api_data(0);
+        $api_data = $this->get_api_data($page);
         if (is_wp_error($api_data) || array_key_exists('error', $api_data)) {
             return [
                 'log'     => __LINE__,
@@ -43,28 +43,29 @@ class ProductUpdater
         $output = '';
         /** @var \WC_Product $product */
         foreach ($products as $product) {
-            $sku       = $product->get_sku();
-            $productId = $product->get_id();
-            if (!$sku) {
-                $output .= "<div class=\"log-error\">No SKU number found for product ID: {$productId}";
+            $productId   = $product->get_id();
+            $productCode = get_post_meta($productId, 'mm_product_code', true);
+
+            if (!$productCode) {
+                $output .= "<div class=\"log-error\">No MM Product code found for # {$productId}";
                 $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' .
                            $product->get_title() . '</a></div>';
                 continue;
             }
 
-            if (!isset($api_data[$sku])) {
-                $output .= "<div class=\"log-alert\">No API data found for SKU: {$sku}";
+            if (!isset($api_data[$productCode])) {
+                $output .= "<div class=\"log-alert\">No API data found for ProductCode: {$productCode}";
                 $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' .
                            $product->get_title() . '</a></div>';
                 continue;
             }
 
-            update_post_meta($productId, 'reseller_price', $api_data[$sku]['price_reseller']);
-            update_post_meta($productId, 'resellerbasic_price', $api_data[$sku]['price_end_user']);
-            update_post_meta($productId, 'stock_quantity', $api_data[$sku]['available_stock'] ?? 0);
-            update_post_meta($productId, 'api_data', json_encode($api_data[$sku]));
+            update_post_meta($productId, 'reseller_price', $api_data[$productCode]['price_reseller']);
+            update_post_meta($productId, 'resellerbasic_price', $api_data[$productCode]['price_end_user']);
+            update_post_meta($productId, 'stock_quantity', $api_data[$productCode]['available_stock'] ?? 0);
+            update_post_meta($productId, 'api_data', json_encode($api_data[$productCode]));
 
-            $output .= "<div class=\"log-debug\">Updated product ID: {$productId} (SKU: $sku) ";
+            $output .= "<div class=\"log-debug\">Updated product ID: {$productId} (Code: $productCode) ";
             $output .= ' <a href="/wp-admin/post.php?action=edit&post=' . $productId . '" class="italic" target="product">' .
                        $product->get_title() . '</a></div>';
         }
@@ -115,13 +116,13 @@ class ProductUpdater
             ];
         }
 
-        $existing_skus = $this->get_existing_skus();
+        $existing_codes = $this->get_existing_codes();
 
         $data = [
-            'new_skus'       => [],
+            'new_codes'      => [],
             'new'            => 0,
             'total_api'      => count($api_data),
-            'total_existing' => count($existing_skus),
+            'total_existing' => count($existing_codes),
         ];
 
         if (empty($data)) {
@@ -129,13 +130,13 @@ class ProductUpdater
         }
 
         foreach ($api_data as $product) {
-            $sku = $product['sku'] ?? 0;
-            if (empty($sku)) {
+            $code = $product['code'] ?? 0;
+            if (empty($code)) {
                 continue;
             }
-            if (!in_array($sku, $existing_skus, true)) {
+            if (!in_array($code, $existing_codes, true)) {
                 $data['new']++;
-                $data['new_skus'][] = $sku;
+                $data['new_codes'][] = $code;
             }
         }
 
@@ -167,6 +168,35 @@ class ProductUpdater
     }
 
     /**
+     * Get all existing Product Codes from WooCommerce products
+     *
+     * @return array
+     */
+    private function get_existing_codes(): array
+    {
+        $args     = [
+            'limit'   => -1,
+            'return ' => 'ids',
+        ];
+        $products = wc_get_products($args);
+        $codes    = [];
+
+        foreach ($products as $product_id) {
+            $product = wc_get_product($product_id);
+            if (!$product) {
+                continue;
+            }
+            $code = get_post_meta($product_id, 'mm_product_code', true);
+            if (!$code) {
+                continue;
+            }
+            $codes[] = $code;
+        }
+
+        return $codes;
+    }
+
+    /**
      * Import new products from API
      *
      * @param int $page
@@ -193,42 +223,43 @@ class ProductUpdater
             ];
         }
 
-        $output        = [];
-        $create_result = [];
-        $counter       = 0;
-        $existing_skus = $this->get_existing_skus();
+        $output         = [];
+        $create_result  = [];
+        $counter        = 0;
+        $existing_codes = $this->get_existing_codes();
 
         foreach ($api_data as $api_product) {
             $sku   = $api_product['sku'] ?? 0;
+            $code  = $api_product['code'] ?? 0;
             $title = $api_product['title'] ?? 'no name';
-            if (empty($sku) || in_array($sku, $existing_skus, true)) {
+            if (empty($code) || in_array($code, $existing_codes, true)) {
                 continue;
             }
 
-            $result          = $this->create_product_from_api($api_product, $sku);
+            $result = $this->create_product_from_api($api_product, $code, $sku);
             $create_result[] = $result;
 
             if (is_wp_error($result)) {
-                $output[] = '<span class="log-error">Error creating product SKU ' .
-                            $sku . ': ' . $result->get_error_message() .
+                $output[] = '<span class="log-error">Error creating product Code ' .
+                            $code . ': ' . $result->get_error_message() .
                             '</span>';
                 continue;
             }
 
             $url      = get_admin_url() . 'post.php?action=edit&post=' . $result;
             $output[] = '<span class="log-debug">Created: <a href="' . $url . '" target="edit">' .
-                        'ID: ' . $result . 'SKU: ' . $sku . ' : ' . $title .
+                        'ID: ' . $result . ' - Code: ' . $code . ' - ' . $title .
                         '</a></span>';
             $counter++;
         }
 
         $new = 0;
         foreach ($api_data as $product) {
-            $sku = $product['sku'] ?? 0;
-            if (empty($sku)) {
+            $code = $product['code'] ?? 0;
+            if (empty($code)) {
                 continue;
             }
-            if (!in_array($sku, $this->get_existing_skus(), true)) {
+            if (!in_array($code, $this->get_existing_codes(), true)) {
                 $new++;
             }
         }
@@ -246,13 +277,18 @@ class ProductUpdater
      * Create a new WooCommerce product from API data
      *
      * @param array $api_product
-     * @param string $sku
+     * @param string $code
+     * @param string $sku Optional SKU for the product
      * @return int|\WP_Error
      */
-    private function create_product_from_api($api_product, $sku)
+    private function create_product_from_api($api_product, $code, $sku = 0)
     {
-        if (empty($sku) || $sku === 0) {
-            return new \WP_Error('invalid_sku', 'SKU is required to create product');
+        if (empty($code) || $code === 0) {
+            return new \WP_Error('invalid_code', 'Code is required to create product');
+        }
+
+        if (!class_exists('WC_Product_Simple')) {
+            return new \WP_Error('woocommerce_missing', 'WooCommerce is required to create products');
         }
 
         $product = new \WC_Product_Simple();
@@ -261,9 +297,11 @@ class ProductUpdater
         $price_end_user  = $api_product['price_end_user'] ?? 0;
         $available_stock = $api_product['available_stock'] ?? 0;
         $price_reseller  = $api_product['price_reseller'] ?? 0;
+        if (empty($sku)) {
+            $sku = $api_product['sku'] ?? 0;
+        }
 
         $product->set_name($product_title);
-        $product->set_sku($sku);
         $product->set_status('draft');
         $product->set_catalog_visibility('hidden');
 
@@ -286,6 +324,8 @@ class ProductUpdater
         update_post_meta($product_id, 'reseller_price', $price_reseller);
         update_post_meta($product_id, 'resellerbasic_price', $price_end_user);
         update_post_meta($product_id, 'stock_quantity', $available_stock);
+        update_post_meta($product_id, 'mm_product_code', $code);
+        update_post_meta($product_id, 'mm_manufacturer_sku', $sku);
 
         return $product_id;
     }

@@ -49,7 +49,7 @@
                 <th scope="row"><?= __('Reload data', MM_API_DOMAIN) ?></th>
                 <td>
                     <p>
-                        This will check all the products in on the website and update the price and stock, based on the SKU.
+                        This will check all the products in on the website and update the price and stock, based on the <b>'MM product code'</b>.
                     </p>
                     <button type="button" class="button mm_api_reload">
                         <?php _e('Reload', MM_API_DOMAIN) ?>
