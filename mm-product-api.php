@@ -53,36 +53,7 @@ if ( ! Admin::checkDependency() ) {
     return;
 }
 
+register_activation_hook(__FILE__, [Cron::class, 'activate']);
+register_deactivation_hook(__FILE__, [Cron::class, 'deactivate']);
+
 new Plugin();
-
-
-
-//new Admin();
-//if (is_admin()) {
-//    new WooCommerce\Admin();
-//    new Admin\EnqueueScripts();
-//    new Admin\Activator();
-//    new Admin\Cleanup();
-//    new Admin\Menu();
-//    new Admin\ResellerUser();
-//    new Admin\Products();
-//}
-
-
-// If this file is called directly, abort.
-//use DPG\WordPress\EventApi\Admin\FlashMessages;
-//
-//if (! defined('WPINC')) {
-//    die;
-//}
-//
-//define('DPG_EVENTAPI_PATH', trailingslashit(plugin_dir_path(__FILE__)));
-//define('DPG_EVENTAPI_URL', trailingslashit(plugin_dir_url(__FILE__)));
-//define('DPG_EVENTAPI_SLUG', 'dpg-wp-event-api');
-//define('DPG_EVENTAPI_VERSION', '1.2.13');
-//
-//new Frontend();
-//new Shortcode();
-//new Admin();
-//new FlashMessages();
-//new Timber();
