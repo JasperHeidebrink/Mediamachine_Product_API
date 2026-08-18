@@ -61,7 +61,7 @@ class ProductUpdater
 
             update_post_meta($productId, 'reseller_price', $api_data[$sku]['price_reseller']);
             update_post_meta($productId, 'resellerbasic_price', $api_data[$sku]['price_end_user']);
-            update_post_meta($productId, 'stock_quantity', $api_data[$sku]['available_stock']??0);
+            update_post_meta($productId, 'stock_quantity', $api_data[$sku]['available_stock'] ?? 0);
             update_post_meta($productId, 'api_data', json_encode($api_data[$sku]));
 
             $output .= "<div class=\"log-debug\">Updated product ID: {$productId} (SKU: $sku) ";
@@ -249,11 +249,8 @@ class ProductUpdater
      * @param string $sku
      * @return int|\WP_Error
      */
-    private
-    function create_product_from_api(
-        $api_product,
-        $sku
-    ) {
+    private function create_product_from_api($api_product, $sku)
+    {
         if (empty($sku) || $sku === 0) {
             return new \WP_Error('invalid_sku', 'SKU is required to create product');
         }
@@ -293,12 +290,14 @@ class ProductUpdater
         return $product_id;
     }
 
-    public
-    function schedule_price_updates(
-        $interval = 'hourly'
-    ) {
-        if (!wp_next_scheduled('mm_product_api_update_prices')) {
-            wp_schedule_event(time(), $interval, 'mm_product_api_update_prices');
+    public function schedule_price_updates($interval = null)
+    {
+        if ($interval === null) {
+            $interval = Cron::get_recurrence_key();
+        }
+
+        if (!wp_next_scheduled(Cron::EVENT_HOOK)) {
+            wp_schedule_event(time(), $interval, Cron::EVENT_HOOK);
         }
     }
 }

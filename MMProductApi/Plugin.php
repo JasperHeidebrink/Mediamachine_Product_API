@@ -23,6 +23,8 @@ class Plugin
      */
     public function __construct()
     {
+        new Cron();
+
         if (!is_admin()) {
             return;
         }
