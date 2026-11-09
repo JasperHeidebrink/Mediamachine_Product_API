@@ -4,7 +4,7 @@
  *
  * @package           MM_Product_API
  * Plugin Name:       Mediamachine Product Stock API Plugin
- * Plugin URI:        https://www.dpgmediamagazines.nl
+ * Plugin URI:        https://www.dragonet.nl
  * Description:       This plugin will make it possible to connect a website to the filemaker database of Mediamachine
  * Version:           1.0.0
  * Author:            Dragonet
@@ -28,8 +28,8 @@ if (!defined('WPINC')) {
 /**
  * Define the defaults
  */
-//define('MM_API_VERSION', '1.0.0');
-define('MM_API_VERSION', time());
+define('MM_API_VERSION', '1.0.0');
+//define('MM_API_VERSION', time());
 define('MM_API_DOMAIN','mm-product-api');
 define('MM_API_PATH', trailingslashit(plugin_dir_path(__FILE__)));
 define('MM_API_DIR', trailingslashit(plugin_dir_url(__FILE__)));
